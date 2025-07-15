@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thangaswathi A Portfolio Website</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter CDN -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .sr-only {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          padding: 0;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+          border-width: 0;
+        }
+
+        @keyframes fadeInSlideUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fadeInSlideUp {
+          animation: fadeInSlideUp 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInZoomIn {
+          from { opacity: 0; transform: scale(0.9); }
+          to { opacity: 1; transform: scale(1); }
+        }
+
+        .animate-fadeInZoomIn {
+          animation: fadeInZoomIn 0.8s ease-out forwards;
+        }
+
+        .skill-item {
+          display: flex;
+          align-items: center;
+          gap: 10px; /* Space between logo and text */
+        }
+        .skill-logo {
+          width: 24px; /* Adjust size as needed */
+          height: 24px; /* Adjust size as needed */
+          object-fit: contain;
+        }
+
+        /* Styles for section animations on scroll */
+        .animated-section {
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .animated-section.is-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        /* Specific animation for skills logos */
+        @keyframes popUpAndStand {
+          0% { opacity: 0; transform: translateY(20px) scale(0.8); }
+          60% { opacity: 1; transform: translateY(-5px) scale(1.05); }
+          100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .animate-popUpAndStand {
+          animation: popUpAndStand 0.6s ease-out forwards;
+        }
+
+        /* Parallax specific styles for Experience section */
+        .parallax-section {
+          background-attachment: fixed;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          position: relative; /* Needed for overlay positioning */
+          min-height: 500px; /* Ensure it always has a height */
+        }
+
+        .parallax-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.6); /* Darker overlay for readability */
+          z-index: 1; /* Ensure overlay is behind content but above background */
+        }
+
+        .parallax-content {
+          position: relative;
+          z-index: 2; /* Ensure content is above overlay */
+        }
+
+        /* Mobile menu specific styles */
+        .mobile-menu-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.7);
+          z-index: 40; /* Below fixed header, above main content */
+          display: flex;
+          justify-content: flex-end;
+          transition: background-color 0.3s ease-out;
+        }
+
+        .mobile-menu {
+            margin-top: 35px;
+          width: 25%; /* Adjust as needed */
+          background-color: #fff;
+          padding: 2rem;
+          box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+          transform: translateX(100%);
+          transition: transform 0.3s ease-out;
+        }
+
+        .mobile-menu.open {
+          transform: translateX(0);
+        }
+
+        /* Glassmorphism styles */
+        .glassmorphism-card {
+          background-color: rgba(255, 255, 255, 0.15); /* Slightly transparent white */
+          backdrop-filter: blur(10px); /* Frosted glass effect */
+          border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle light border */
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+          border-radius: 12px; /* Rounded corners */
+        }
+
+        .glassmorphism-dark {
+          background-color: rgba(0, 0, 0, 0.2); /* Slightly transparent black */
+          backdrop-filter: blur(8px); /* Frosted glass effect */
+          border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle light border */
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+          border-radius: 12px; /* Rounded corners */
+        }
+
+        @keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useCallback } = React;
+
+        // Main App component
+        const App = () => {
+          // State to manage the active section for navigation (though not fully implemented as a multi-page app)
+          const [activeSection, setActiveSection] = useState('home');
+          // State for the custom message box
+          const [messageBox, setMessageBox] = useState({ visible: false, message: '', type: '' });
+
+          // State to trigger hero section animations
+          const [heroAnimated, setHeroAnimated] = useState(false);
+
+          // State to track revealed sections for scroll animations
+          const [revealedSections, setRevealedSections] = useState({});
+
+          // Refs for each section to observe intersection
+          const sectionRefs = useRef({});
+
+          // State for enhanced statements (using a Map for efficient updates)
+          const [enhancedStatements, setEnhancedStatements] = useState(new Map());
+          // State to track which statement is currently being enhanced for loading indicators
+          const [loadingStatementId, setLoadingStatementId] = useState(null);
+
+          // State for mobile menu visibility
+          const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+
+          // Callback to set ref for each section
+          const setSectionRef = useCallback((node, id) => {
+            if (node) {
+              sectionRefs.current[id] = node;
+            }
+          }, []);
+
+          // Effect to trigger hero animations on component mount
+          useEffect(() => {
+            setHeroAnimated(true);
+          }, []);
+
+          // Effect for IntersectionObserver
+          useEffect(() => {
+            const observer = new IntersectionObserver(
+              (entries) => {
+                entries.forEach((entry) => {
+                  if (entry.isIntersecting) {
+                    setRevealedSections((prev) => ({
+                      ...prev,
+                      [entry.target.id]: true,
+                    }));
+                    // Optionally, unobserve once animated
+                    // observer.unobserve(entry.target);
+                  }
+                });
+              },
+              {
+                root: null, // viewport
+                rootMargin: '0px',
+                threshold: 0.1, // Trigger when 10% of the section is visible
+              }
+            );
+
+            // Observe all sections
+            Object.values(sectionRefs.current).forEach((section) => {
+              observer.observe(section);
+            });
+
+            return () => {
+              // Disconnect observer on component unmount
+              Object.values(sectionRefs.current).forEach((section) => {
+                observer.unobserve(section);
+              });
+              observer.disconnect();
+            };
+          }, []); // Run once on mount
+
+          // Effect to load AccessiBe widget
+          useEffect(() => {
+            const scriptId = 'accessibe-widget';
+            // Check if the script is already loaded to prevent duplicates
+            if (!document.getElementById(scriptId)) {
+              const script = document.createElement('script');
+              script.id = scriptId;
+              script.src = 'https://cdn.accessibe.com/accessibe.js';
+              // Replace 'YOUR_ACCESSIBLE_TOKEN' with your actual AccessiBe token
+              script.setAttribute('data-access-token', 'YOUR_ACCESSIBLE_TOKEN');
+              script.onload = () => {
+                console.log('AccessiBe widget loaded successfully.');
+              };
+              script.onerror = () => {
+                console.error('Failed to load AccessiBe widget script.');
+              };
+              document.body.appendChild(script);
+            }
+
+            // Cleanup function to remove the script if the component unmounts
+            return () => {
+              const existingScript = document.getElementById(scriptId);
+              if (existingScript) {
+                existingScript.remove();
+              }
+            };
+          }, []); // Empty dependency array ensures this runs only once on mount
+
+          // Function to show the custom message box
+          const showMessageBox = (message, type = 'info') => {
+            setMessageBox({ visible: true, message, type });
+          };
+
+          // Function to hide the custom message box
+          const hideMessageBox = () => {
+            setMessageBox({ visible: false, message: '', type: '' });
+          };
+
+          // Function to enhance a statement using Gemini API
+        //   const enhanceStatement = async (statementText, sectionName, index) => {
+        //     const statementId = `${sectionName}-${index}`;
+        //     setLoadingStatementId(statementId); // Set loading for this specific statement
+
+        //     try {
+        //       const prompt = `Rewrite the following professional statement to be more impactful, concise (1-2 sentences), using strong action verbs and highlighting quantifiable results if possible, for a resume/portfolio context: "${statementText}"`;
+
+        //       let chatHistory = [];
+        //       chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+        //       const payload = { contents: chatHistory };
+        //       const apiKey = ""; // Canvas will automatically provide this in runtime
+        //       const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+        //       const response = await fetch(apiUrl, {
+        //         method: 'POST',
+        //         headers: { 'Content-Type': 'application/json' },
+        //         body: JSON.stringify(payload)
+        //       });
+
+        //       const result = await response.json();
+
+        //       if (result.candidates && result.candidates.length > 0 &&
+        //         result.candidates[0].content && result.candidates[0].content.parts &&
+        //         result.candidates[0].content.parts.length > 0) {
+        //         const enhancedText = result.candidates[0].content.parts[0].text;
+        //         setEnhancedStatements(prev => new Map(prev.set(statementId, enhancedText)));
+        //       } else {
+        //         showMessageBox('Failed to enhance statement. Please try again.', 'error');
+        //         console.error('Gemini API response structure unexpected:', result);
+        //       }
+        //     } catch (error) {
+        //       showMessageBox('Error enhancing statement. Please check your network connection.', 'error');
+        //       console.error('Error calling Gemini API:', error);
+        //     } finally {
+        //       setLoadingStatementId(null); // Clear loading state
+        //     }
+        //   };
+
+          // Function to copy text to clipboard
+          const copyToClipboard = (text) => {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+              document.execCommand('copy');
+              showMessageBox('Copied to clipboard!', 'success');
+            } catch (err) {
+              console.error('Failed to copy text: ', err);
+              showMessageBox('Failed to copy text. Please copy manually.', 'error');
+            }
+            document.body.removeChild(textarea);
+          };
+
+
+          // Data for the portfolio, extracted from the resume
+          const portfolioData = {
+            name: "Thangaswathi A",
+            contact: {
+              email: "tswaathi@gmail.com", // Phone number removed
+              linkedin: "linkedin.com/in/thangaswathiarumugam"
+            },
+            summary: "A results-driven leader with 10+ years of experience in client management, branding, marketing, product pricing and end-to-end project execution across B2B, B2C and retail environments. Proven ability to lead cross-functional teams and deliver projects on time and under budget through effective risk mitigation, stakeholder alignment, and Agile methodologies. Skilled in brand storytelling, lead generation, campaign management, and customer engagement. Known for increasing team productivity by 15%, reducing project delays by 25%, reducing product pricing by 25%, and improving operational efficiency by 15%. Currently pursuing PMP® certification to strengthen structured delivery, strategic planning, and project leadership skills.",
+            organizationalSkills: [
+              "Project Planning, Execution & Delivery",
+              "Process Optimization & Workflow Management",
+              "Stakeholder & Vendor Coordination",
+              "Time, Resource Management & Calendar Management",
+              "Performance Tracking & Risk Mitigation",
+              "Cross-Functional Team Leadership",
+              "Agile & Strategic Thinking",
+              "Marketing Strategy, Research & Product Pricing",
+              "Branding, Promotions & Market Communication",
+              "Event Management",
+              "Content Writing & Documentation"
+            ],
+            technicalSkills: { // This remains for the detailed list
+              pmp: "PMP (in progress)",
+              officeTools: "Prezi.ai, Microsoft Office (PowerPoint, Word, Excel), Google Docs, Google Sheets",
+              designWeb: "WordPress, Canva, InVideo Ai",
+              projectManagement: "Scrum, Smartsheet, Jira, Trello, Miro",
+              methodologies: "Agile Development"
+            },
+            technicalSkillsLogos: [ // New array for horizontal logos
+              { name: "PMP", logo: "https://placehold.co/40x40/4f46e5/ffffff?text=PMP" },
+              { name: "Prezi.ai", logo: "https://placehold.co/40x40/FF5722/ffffff?text=Prezi" },
+              { name: "MS Office", logo: "https://placehold.co/40x40/2868c7/ffffff?text=Office" },
+              { name: "WordPress", logo: "https://placehold.co/40x40/21759b/ffffff?text=WP" },
+              { name: "Canva", logo: "https://placehold.co/40x40/00C4CC/ffffff?text=Canva" },
+              { name: "InVideo Ai", logo: "https://placehold.co/40x40/FF0000/ffffff?text=InVideo" },
+              { name: "Scrum", logo: "https://placehold.co/40x40/000000/ffffff?text=Scrum" },
+              { name: "Smartsheet", logo: "https://placehold.co/40x40/008000/ffffff?text=Smart" },
+              { name: "Jira", logo: "https://placehold.co/40x40/0052CC/ffffff?text=Jira" },
+              { name: "Trello", logo: "https://placehold.co/40x40/0079BF/ffffff?text=Trello" },
+              { name: "Miro", logo: "https://placehold.co/40x40/050C3A/ffffff?text=Miro" },
+              { name: "Agile", logo: "https://placehold.co/40x40/673ab7/ffffff?text=Agile" },
+            ],
+            experience: [
+              {
+                title: "Project Manager",
+                company: "Stellar Innovations Private Limited & Mediomix Diagnosis & Bioresearch",
+                duration: "Sept 2023 - Present",
+                responsibilities: [
+                  "Led the ideation, creation, and release of two flagship products, working alongside product, design, and engineering teams to synchronize with client requirements and business objectives.",
+                  "Coordinated with CXOs to ensure alignment of project strategies with business objectives, directing multi-disciplinary teams to attain significant results for both B2B and B2C domains.",
+                  "Developed and implemented lead generation strategies via online and offline marketing channels, utilizing upselling and cross-selling to fuel growth and deepen client relationships.",
+                  "Developed and implemented creative branding campaigns that pushed market visibility up and boosted team performance by 20%, working with cross-functional teams to deliver high-quality marketing materials (content, posters, website/app/portal visuals, reports, promotional videos).",
+                  "Handled vendor relations, negotiated agreements, worked with legal papers, performed price analysis, product pricing and ensured compliance, while coordinating deliverables to fulfill project needs.",
+                  "Collaborated with delivery and operations teams to coordinate project timelines, budgets, and deliverables, achieving timely and within-budget completion and actively preventing risks.",
+                  "Conducted client standup calls regularly, providing updates, addressing concerns, and establishing opportunities for growth, maintaining high client satisfaction. Successfully led end-to-end software development life cycle.",
+                  "Guided internal and external communications efforts to reinforce steady messaging, creating brand stature and awareness, and led employee branding initiatives to attract top talent.",
+                  "Conducted competitor analysis and provided strategic advice to help clients position themselves effectively in the market.",
+                  "Implemented operations enhancements, leading initiatives that created measurable improvements in efficiency and resource utilization."
+                ],
+                // Placeholder for a project visual
+                projectVisual: "https://placehold.co/600x400/4f46e5/ffffff?text=Project+Visual+1"
+              },
+              {
+                title: "Sr. Executive- Corporate Marketing",
+                company: "Intellect Design Arena Ltd",
+                duration: "Apr 2022 - Mar 2023",
+                responsibilities: [
+                  "Led cross-functional teams to implement global marketing, branding, and event programs and align project objectives with overall business strategies. Worked with CXOs and key stakeholders to advance strategic initiatives.",
+                  "Applied Agile practices, cutting project delays and enhancing delivery speed by 25%. Tracked project progress, performed performance reviews, and streamlined workflows to deliver on time and at high quality.",
+                  "Carried out extensive market analysis to determine industry trends, competitor positioning, product pricing, and brand awareness, supporting fact-based decision-making for product development and positioning.",
+                  "Developed strategic content and forged partnerships that reinforced the organization's community outreach and CSR efforts. Contributed to the Social Connect initiative, driving community engagement and CSR branding.",
+                  "Designed and implemented lead generation strategies to drive customer acquisition.",
+                  "Negotiated deals, delivered engaging client presentations, and helped with pre-sales for point-of-sale software.",
+                  "Enabled employee engagement activities, led team performance audits, and aided in talent recruitment to enhance workforce productivity and retention.",
+                  "Assessed financial data, including project budgets, risk assessments, and resource scheduling, to maintain cost-effective and high-quality project delivery. Successfully led end-to-end software development life cycle projects.",
+                  "Created and implemented plans to enhance lead generation and customer acquisition. Closed deals, made high-impact client presentations, and supported pre-sales activities for POS software solutions for the retail industry."
+                ],
+                projectVisual: "https://placehold.co/600x400/8b5cf6/ffffff?text=Project+Visual+2"
+              },
+              {
+                title: "Content Writing & Admin",
+                company: "Prosmack",
+                duration: "Dec 2021 - Apr 2022",
+                responsibilities: [
+                  "Developed compelling website content, contract language, and registration forms, all of which were aligned with marketing and business goals.",
+                  "Coordinated with managers in planning projects, allocating resources, and tracking performances.",
+                  "Managed calendar organization, travel scheduling, and event arrangements to automate administrative functions.",
+                  "Improved partnership by maximally optimizing accounts balances, payment monitoring, and building solid client and sales team relations.",
+                  "Coordinated retail partner tasks, such as timesheets, expenses, pricing, invoicing, and vendor setup, while ensuring proper legal documentation.",
+                  "Assisted with client onboarding and CRM administration, ensuring seamless interactions and customer satisfaction.",
+                  "Assisted with employee lifecycle processes, such as onboarding, benefits management, offboarding, and grievance management.",
+                  "Completed financial projections and cost analysis, aimed at finding avenues of cost reduction without compromising on quality and business impact."
+                ],
+                projectVisual: "https://placehold.co/600x400/ec4899/ffffff?text=Project+Visual+3"
+              },
+              {
+                title: "International Events Manager",
+                company: "Queens International Fashion & Events",
+                duration: "Apr 2021 - Dec 2021",
+                responsibilities: [
+                  "Managed the execution of significant international events and oversaw interdisciplinary teams to ensure a flawless delivery.",
+                  "Created customized sponsorship pricing pitches to improve partner relationships and negotiated sponsorship agreements and collaborations, which contributed to a 30% increase in revenue.",
+                  "Streamlined the distribution of tasks to optimize collaboration and meet important project deadlines. By connecting business cases to client priorities, I was able to provide change project extension scenarios that made it simple for modifications to be made during project revisions.",
+                  "Decreased costs by negotiating with partners and suppliers, obtaining cost-effective solutions without compromising quality."
+                ],
+                projectVisual: "https://placehold.co/600x400/10b981/ffffff?text=Project+Visual+4"
+              },
+              {
+                title: "Assistant Manager",
+                company: "IVS Group Ltd",
+                duration: "May 2018 - Feb 2019",
+                responsibilities: [
+                  "Managed multiple concurrent events, from logistics to on-site execution, pricing, ensuring stakeholder satisfaction.",
+                  "Designed sponsorship proposals and secured partnerships to maximize event impact with retail industry.",
+                  "Streamlined workflows for resource efficiency across event management processes.",
+                  "Conducted in-depth prospect research, tailoring presentations to secure valuable partnerships and clients.",
+                  "Developed engaging content, enhancing brand appeal and communication to the target audience."
+                ],
+                projectVisual: "https://placehold.co/600x400/f59e0b/ffffff?text=Project+Visual+5"
+              },
+              {
+                title: "Outreach Officer",
+                company: "Greenpeace",
+                duration: "Aug 2015 - Apr 2018",
+                responsibilities: [
+                  "Managed the delivery of large-scale international events, coordinating cross-functional teams to provide impeccable delivery.",
+                  "Created tailored sponsorship proposals that enhanced partner relationships and led to securing deals that boosted revenue by 30%.",
+                  "Rearranged task allocation to enhance team working and deliver key project deadlines.",
+                  "Enabled problem-free project amendments through matching business cases with client priorities, preventing disruption during revision.",
+                  "Negotiated price reductions without sacrificing quality with suppliers and partners.",
+                  "Oversaw national outreach initiatives, collaborating with corporations, NGOs, and the media to meet yearly outreach goals and have the greatest possible social impact.",
+                  "Coordinated outreach initiatives with organizational goals by facilitating HR programs and implementing creative environmental solutions.",
+                  "15% increase in team productivity was achieved through coaching and improved communication techniques."
+                ],
+                projectVisual: "https://placehold.co/600x400/06b6d4/ffffff?text=Project+Visual+6"
+              },
+              {
+                title: "Co-Founder",
+                company: "The Good Will Tribe-Chennai chapter",
+                duration: "Apr 2014 - Mar 2021",
+                responsibilities: [
+                  "Listed in the top 100 social enablers in the world 2017 ranking 9th place by socialenablers.co.",
+                  "Organized social experiment activities for mental health awareness, event planning, and networking.",
+                  "Contributed to content creation, budgeting, and cross-functional team collaboration.",
+                  "Created public sponsorship pitches to improve relationships and negotiated sponsorship agreements and collaborations, which contributed to a 70% increase in revenue."
+                ],
+                projectVisual: "https://placehold.co/600x400/6366f1/ffffff?text=Project+Visual+7"
+              }
+            ],
+            education: [
+              {
+                degree: "PMP Certification (In-Progress)",
+                institution: "Project Management Institute"
+              },
+              {
+                degree: "Executive Program in Product Management",
+                institution: "XLRI"
+              },
+              {
+                degree: "M.A. Social Work in Psychiatry",
+                institution: "Loyola College",
+                note: "Internationally recognized by WES"
+              },
+              {
+                degree: "B.A. Corporate Economics",
+                institution: "Women's Christian College",
+                note: "Internationally recognized by WES"
+              }
+            ],
+            accomplishments: [
+              "Succesfully completed 'Ascend- A Leadership Development Program' Conducted by Learning Bridges Services & Stellar Innovation Pvt Ltd, April to June 2025. ",
+              "World Education Services credentials evaluation approved for bachelor's and master's degrees.",
+              "Organized international events for journalists, fashion calendar shoot/launch, CSR event for school children and cruise party for the BFSI professionals.",
+              "Recognized as the Best Employee at Greenpeace India in 2016 and 2017.",
+              "Listed in the top 100 social enablers in the world 2017 ranking 9th place by socialenablers.co.",
+              "Managed a team of 30-35 members to achieve city targets.",
+              "Successfully reduced project delays by 25% by optimizing resource allocation and enforcing rigorous timeline management. Successfully led end-to-end software development life cycle projects.",
+              "Represented in the UN-Women council on the topic \"Promoting economic empowerment and skill development for young women\" representing Venezuela.",
+              "Directed outreach programs, exceeding targets and building networks across NGOs for impactful advocacy."
+            ],
+            publications: [
+              {
+                title: "Letters of hope help bring people back from brink",
+                url: "https://timesofindia.indiatimes.com/city/chennai/letters-of-hope-help-bring-people-back-from-brink/articleshow/52859408.cms"
+              },
+              {
+                title: "Faceless pen pals have your back",
+                url: "https://timesofindia.indiatimes.com/city/chennai/faceless-pen-pals-have-your-back/articleshow/61312775.cms"
+              },
+              {
+                title: "When a handwritten letter can change someone's life",
+                url: "https://www.newindianexpress.com/cities/chennai/2016/Jun/21/when-a-handwritten-letter-can-change-someones-life-883341.html"
+              },
+              {
+                title: "With love from hope",
+                url: "https://www.newindianexpress.com/cities/chennai/2017/Sep/12/with-love-from-hope-1656197.html"
+              }
+            ],
+            recommendations: [
+              {
+                quote: `I am delighted to write a recommendation for Thangaswathi, who had the privilege of working with her at Greenpeace. Throughout her time at our organisation, she consistently demonstrated outstanding dedication, professionalism, and a strong commitment to achieving results.
+
+Swathi was an integral part of our team, contributing her expertise and passion to outrech work. She exhibited exceptional communication skills, which allowed her to collaborate effectively with both colleagues and corporate. She consistently displayed a proactive attitude, always eager to take on new challenges and deliver high-quality results.
+
+One of her most notable strengths is her ability to adapt to changing circumstances and excel under pressure. She consistently met deadlines , even in the face of tight schedules and demanding situations . She has an impressive work ethic and consistently went above and beyond to ensure the success of our team and targets. It is without reservation that I recommend Swathi and believe she will be a valuable addition to any organization fortunate enough to have her on board.Thangaswathi is an exceptionally dedicated and results-oriented professional. Her ability to manage complex projects and deliver under pressure is truly commendable. She consistently goes above and beyond to ensure success.`,
+                author: "Sebastian",
+                title: "Sr. Territory Manager at Greenpeace India"
+              },
+              {
+                quote: `What stands out about Thangaswathi is her passion, energy and empathic nature. I am constantly in awe of her dedication to make a difference in the world, be it through raising funds in her day job, reaching out to those in need through counselling, or being the leader in her community and spreading kindness over the weekends with The Goodwill Tribe. Thangaswathi has been trustable, responsible and can take on tasks independently. She is extremely approachable, proactive and ensures that tasks are followed through till the end. She's got a zesty spirit and will be a gift to any organisation or setting.
+
+With kindness,
+Sonia Parekh
+Co-founder`,
+                author:"Sonia Parekh",
+                title: "Cofounder at The Goodwill Tribe"
+              }
+            ]
+          };
+
+          // Utility component for a section title
+          const SectionTitle = ({ children }) => (
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6 text-center border-b-2 border-yellow-500 pb-2">
+              {children}
+            </h2>
+          );
+
+          // Component for displaying a list of items (e.g., skills, responsibilities)
+          const ListItem = ({ children }) => (
+            <li className="flex items-start mb-2">
+              <svg className="w-5 h-5 text-indigo-500 mr-2 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
+              </svg>
+              <p className="text-gray-700 text-lg">{children}</p>
+            </li>
+          );
+
+          // Contact Form component
+          const ContactForm = () => {
+            const [formData, setFormData] = useState({
+              name: '',
+              email: '',
+              message: ''
+            });
+
+            const handleChange = (e) => {
+              const { name, value } = e.target;
+              setFormData(prev => ({ ...prev, [name]: value }));
+            };
+
+            const handleSubmit = async (e) => {
+              e.preventDefault();
+              try {
+                // This URL should be your deployed backend URL. For local testing, use http://localhost:3001
+                const response = await fetch('http://localhost:3001/send-email', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(formData),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                  showMessageBox('Thank you for your message! I will get back to you shortly.', 'success');
+                  setFormData({ name: '', email: '', message: '' });
+                } else {
+                  showMessageBox(`Failed to send message: ${result.message || 'An unknown error occurred.'}`, 'error');
+                }
+              } catch (error) {
+                console.error('Error submitting form:', error);
+                showMessageBox('There was an issue connecting to the server. Please try again later.', 'error');
+              }
+            };
+
+            return (
+              <form onSubmit={handleSubmit} className="w-full max-w-lg mx-auto bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                <div className="mb-4">
+                  <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">
+                    Name:
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
+                    required
+                    aria-required="true"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
+                    Email:
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
+                    required
+                    aria-required="true"
+                  />
+                </div>
+                <div className="mb-6">
+                  <label htmlFor="message" className="block text-gray-700 text-sm font-bold mb-2">
+                    Message:
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    rows="5"
+                    className="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
+                    required
+                    aria-required="true"
+                  ></textarea>
+                </div>
+                <div className="flex items-center justify-center">
+                  <button
+                    type="submit"
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-full focus:outline-none focus:shadow-outline transition duration-300 transform hover:scale-105 active:scale-95 shadow-lg"
+                  >
+                    Send Message
+                  </button>
+                </div>
+              </form>
+            );
+          };
+
+          // Custom Message Box Component
+          const MessageBox = ({ message, type, onClose }) => {
+            const bgColor = type === 'success' ? 'bg-green-500' : 'bg-blue-500';
+            const borderColor = type === 'success' ? 'border-green-700' : 'border-blue-700';
+
+            return (
+              // Accessibility: role="alert" for important, time-sensitive information
+              <div role="alert" className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-[1000]">
+                <div className={`p-6 rounded-lg shadow-xl max-w-sm mx-auto text-center ${bgColor} text-white border-2 ${borderColor}`}>
+                  <p className="text-lg font-semibold mb-4">{message}</p>
+                  <button
+                    onClick={onClose}
+                    className="bg-white text-gray-800 font-bold py-2 px-4 rounded-full hover:bg-gray-200 transition duration-300 active:scale-95"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            );
+          };
+
+          // Navigation Links Data for reusability
+          const navLinks = [
+            { href: "#home", label: "Home" },
+            { href: "#about", label: "About" },
+            { href: "#skills", label: "Skills" },
+            { href: "#experience", label: "Experience" },
+            { href: "#education", label: "Education" },
+            { href: "#accomplishments", label: "Accomplishments" },
+            { href: "#publications", label: "Publications" },
+            { href: "#recommendations", label: "Recommendations" },
+            { href: "#contact", label: "Contact" },
+          ];
+
+
+          return (
+            // Accessibility: lang attribute for screen readers
+            <div lang="en" className="min-h-screen bg-gray-50 font-inter text-gray-900">
+              {/* Accessibility: Skip to main content link for keyboard users */}
+              <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-[9999] focus:bg-indigo-600 focus:text-white focus:p-3 focus:rounded-br-lg">
+                Skip to main content
+              </a>
+
+              {/* Custom CSS for animations and Glassmorphism */}
+              <style>
+                {`
+                .sr-only {
+                  position: absolute;
+                  width: 1px;
+                  height: 1px;
+                  padding: 0;
+                  margin: -1px;
+                  overflow: hidden;
+                  clip: rect(0, 0, 0, 0);
+                  white-space: nowrap;
+                  border-width: 0;
+                }
+
+                @keyframes fadeInSlideUp {
+                  from { opacity: 0; transform: translateY(20px); }
+                  to { opacity: 1; transform: translateY(0); }
+                }
+
+                .animate-fadeInSlideUp {
+                  animation: fadeInSlideUp 0.8s ease-out forwards;
+                }
+
+                @keyframes fadeInZoomIn {
+                  from { opacity: 0; transform: scale(0.9); }
+                  to { opacity: 1; transform: scale(1); }
+                }
+
+                .animate-fadeInZoomIn {
+                  animation: fadeInZoomIn 0.8s ease-out forwards;
+                }
+
+                .skill-item {
+                  display: flex;
+                  align-items: center;
+                  gap: 10px; /* Space between logo and text */
+                }
+                .skill-logo {
+                  width: 24px; /* Adjust size as needed */
+                  height: 24px; /* Adjust size as needed */
+                  object-fit: contain;
+                }
+
+                /* Styles for section animations on scroll */
+                .animated-section {
+                  opacity: 0;
+                  transform: translateY(20px);
+                  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+                }
+
+                .animated-section.is-visible {
+                  opacity: 1;
+                  transform: translateY(0);
+                }
+
+                /* Specific animation for skills logos */
+                @keyframes popUpAndStand {
+                  0% { opacity: 0; transform: translateY(20px) scale(0.8); }
+                  60% { opacity: 1; transform: translateY(-5px) scale(1.05); }
+                  100% { opacity: 1; transform: translateY(0) scale(1); }
+                }
+
+                .animate-popUpAndStand {
+                  animation: popUpAndStand 0.6s ease-out forwards;
+                }
+
+                /* Parallax specific styles for Experience section */
+                .parallax-section {
+                  background-attachment: fixed;
+                  background-position: center;
+                  background-repeat: no-repeat;
+                  background-size: cover;
+                  position: relative; /* Needed for overlay positioning */
+                  min-height: 500px; /* Ensure it always has a height */
+                }
+
+                .parallax-overlay {
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  background-color: rgba(0, 0, 0, 0.6); /* Darker overlay for readability */
+                  z-index: 1; /* Ensure overlay is behind content but above background */
+                }
+
+                .parallax-content {
+                  position: relative;
+                  z-index: 2; /* Ensure content is above overlay */
+                }
+
+                /* Mobile menu specific styles */
+                .mobile-menu-overlay {
+                  position: fixed;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  background-color: rgba(0, 0, 0, 0.7);
+                  z-index: 40; /* Below fixed header, above main content */
+                  display: flex;
+                  justify-content: flex-end;
+                  transition: background-color 0.3s ease-out;
+                }
+
+                .mobile-menu {
+                margin-top: 35px;
+                  width: 25%; /* Adjust as needed */
+                  background-color: #fff;
+                  padding: 2rem;
+                  box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+                  transform: translateX(100%);
+                  transition: transform 0.3s ease-out;
+                }
+
+                .mobile-menu.open {
+                  transform: translateX(0);
+                }
+
+                /* Glassmorphism styles */
+                .glassmorphism-card {
+                  background-color: rgba(255, 255, 255, 0.15); /* Slightly transparent white */
+                  backdrop-filter: blur(10px); /* Frosted glass effect */
+                  border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle light border */
+                  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+                  border-radius: 12px; /* Rounded corners */
+                }
+
+                .glassmorphism-dark {
+                  background-color: rgba(0, 0, 0, 0.2); /* Slightly transparent black */
+                  backdrop-filter: blur(8px); /* Frosted glass effect */
+                  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle light border */
+                  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+                  border-radius: 12px; /* Rounded corners */
+                }
+                `}
+              </style>
+
+              {/* Header/Navigation */}
+              <header className="bg-white shadow-md py-4 sticky top-0 z-50">
+                <nav role="navigation" className="container mx-auto px-4 flex justify-between items-center">
+                  <div className="text-2xl font-bold text-indigo-600 rounded-lg p-2">
+                    {portfolioData.name}
+                  </div>
+                  {/* Desktop Navigation - Hidden */}
+                  <ul className="hidden">
+                    {navLinks.map((link) => (
+                      <li key={link.href}>
+                        <a
+                          href={link.href}
+                          className={`text-gray-700 hover:text-indigo-600 font-medium transition duration-300 ${activeSection === link.href.substring(1) ? 'text-indigo-600 border-b-2 border-indigo-600' : ''}`}
+                        >
+                          {link.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Mobile Menu Button (Hamburger Icon) - Always visible */}
+                  <button
+                    className="text-gray-700 p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+                    aria-expanded={isMobileMenuOpen}
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}></path>
+                    </svg>
+                  </button>
+                </nav>
+              </header>
+
+              {/* Mobile Menu Overlay */}
+              {isMobileMenuOpen && (
+                <div className="mobile-menu-overlay" onClick={() => setIsMobileMenuOpen(false)}>
+                  <nav
+                    role="navigation"
+                    aria-label="Mobile navigation"
+                    className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <button
+                      className="absolute top-4 right-4 text-gray-700 p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      aria-label="Close navigation menu"
+                    >
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                    </button>
+                    <ul className="flex flex-col space-y-4 mt-10">
+                      {navLinks.map((link) => (
+                        <li key={link.href}>
+                          <a
+                            href={link.href}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className={`block text-gray-800 hover:text-indigo-600 text-lg font-medium transition duration-300 py-2 px-4 rounded-md ${activeSection === link.href.substring(1) ? 'bg-indigo-100 text-indigo-700' : ''}`}
+                          >
+                            {link.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </nav>
+                </div>
+              )}
+
+              {/* Main Content Area - Target for "Skip to main content" link */}
+              <main id="main-content">
+                {/* Home/Hero Section */}
+                <section id="home" ref={(node) => setSectionRef(node, 'home')} className={`relative text-white py-16 md:py-24 flex items-center justify-center min-h-[calc(100vh-80px)] animated-section ${revealedSections['home'] ? 'is-visible' : ''}`} style={{ backgroundImage: 'url("/images/b10.jpg")', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                  <div className="container mx-auto px-4 text-center">
+                    <div className={`glassmorphism-card p-8 md:p-12 rounded-xl shadow-2xl max-w-3xl mx-auto flex flex-col items-center transform hover:scale-105 transition duration-500 ease-in-out`}>
+                      {/* Profile Photo - Always use placeholder now */}
+                      <img
+                        src="./images/pic1.jpg"
+                        alt="Placeholder profile photo"
+                        className={`w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-yellow-300 mb-6 shadow-lg object-cover ${heroAnimated ? 'animate-fadeInZoomIn' : 'opacity-0'}`}
+                        style={{ animationDelay: '0.2s' }}
+                        // Fallback for image loading errors
+                        onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/150x150/cccccc/333333?text=Profile'; }}
+                      />
+
+                      <h1 className={`text-4xl md:text-6xl font-extrabold mb-4 leading-tight ${heroAnimated ? 'animate-fadeInSlideUp' : 'opacity-0'}`} style={{ animationDelay: '0.4s' }}>
+                        Hello, I'm <span className="text-yellow-300">{portfolioData.name}</span>
+                      </h1>
+                      <p className={`text-xl md:text-2xl mb-8 opacity-90 ${heroAnimated ? 'animate-fadeInSlideUp' : 'opacity-0'}`} style={{ animationDelay: '0.6s' }}>
+                        A Results-Driven Leader in Project Management & Product Marketing
+                      </p>
+                      <a
+                        href="#about"
+                        className={`inline-block bg-yellow-400 text-indigo-900 font-bold py-3 px-8 rounded-full text-lg hover:bg-yellow-300 transition duration-300 transform hover:scale-105 active:scale-95 shadow-lg`}
+                        style={{ animationDelay: '0.8s' }}
+                      >
+                        Learn More About Me
+                      </a>
+                    </div>
+                  </div>
+                </section>
+
+                {/* About Me Section */}
+                <section id="about" ref={(node) => setSectionRef(node, 'about')} className={`py-10 md:py-8 bg-white animated-section ${revealedSections['about'] ? 'is-visible' : ''}`}>
+                  <div className="container mx-auto px-4 max-w-4xl">
+                    <SectionTitle>About Me</SectionTitle>
+                    <div className="glassmorphism-card p-8 rounded-xl shadow-lg border border-gray-200">
+                      <p className="text-lg leading-relaxed text-gray-700">
+                        {portfolioData.summary}
+                      </p>
+                    </div>
+                  </div>
+                </section>
+
+                {/* Skills Section */}
+                <section id="skills" ref={(node) => setSectionRef(node, 'skills')} className={`py-10 md:py-8 bg-gray-50 animated-section ${revealedSections['skills'] ? 'is-visible' : ''}`}>
+                  <div className="container mx-auto px-4 max-w-4xl">
+                    <SectionTitle>Skills</SectionTitle>
+
+                    {/* Horizontal Logos for Technical Skills */}
+                    <div className="flex flex-wrap justify-center items-center gap-6 mb-12">
+                      {portfolioData.technicalSkillsLogos.map((skill, index) => (
+                        <div
+                          key={index}
+                          className={`flex flex-col items-center text-center opacity-0 ${revealedSections['skills'] ? 'animate-popUpAndStand' : ''}`}
+                          style={{ animationDelay: `${0.1 * index}s` }}
+                        >
+                          <img
+                            src={skill.logo}
+                            alt={`${skill.name} logo`}
+                            className="w-12 h-12 object-contain mb-1 rounded-md transform hover:scale-110 transition duration-300"
+                            onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/40x40/cccccc/333333?text=Logo'; }}
+                          />
+                          <span className="text-sm text-gray-700 font-medium">{skill.name}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      {/* Organizational Skills */}
+                      <div className="glassmorphism-card p-8 rounded-xl shadow-lg border border-gray-200">
+                        <h3 className="text-2xl font-semibold text-indigo-700 mb-4">Organizational Skills</h3>
+                        <ul className="list-none p-0">
+                          {portfolioData.organizationalSkills.map((skill, index) => (
+                            <ListItem key={index}>{skill}</ListItem>
+                          ))}
+                        </ul>
+                      </div>
+                      {/* Technical Skills - Detailed List (without individual logos) */}
+                      <div className="glassmorphism-card p-8 rounded-xl shadow-lg border border-gray-200">
+                        <h3 className="text-2xl font-semibold text-indigo-700 mb-4">Technical Skills (Details)</h3>
+                        <ul className="list-none p-0">
+                          <ListItem><span className="font-medium">PMP:</span> {portfolioData.technicalSkills.pmp}</ListItem>
+                          <ListItem><span className="font-medium">Office Tools:</span> {portfolioData.technicalSkills.officeTools}</ListItem>
+                          <ListItem><span className="font-medium">Design & Web:</span> {portfolioData.technicalSkills.designWeb}</ListItem>
+                          <ListItem><span className="font-medium">Project Management:</span> {portfolioData.technicalSkills.projectManagement}</ListItem>
+                          <ListItem><span className="font-medium">Methodologies:</span> {portfolioData.technicalSkills.methodologies}</ListItem>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                
+
+
+                {/* Experience Section - Now with Parallax Effect and improved visibility */}
+                <section
+                  id="experience"
+                  ref={(node) => setSectionRef(node, 'experience')}
+                  className={`py-10 md:py-8 text-white parallax-section animated-section ${revealedSections['experience'] ? 'is-visible' : ''}`}
+                  style={{ backgroundImage: 'url(/images/b1.jpg)' }}
+                >
+                  <div className="parallax-overlay"></div>
+                  <div className="container mx-auto px-4 max-w-5xl parallax-content">
+                    <SectionTitle><span className="text-white">Professional Experience</span></SectionTitle>
+                    <div className="space-y-12">
+                      {portfolioData.experience.map((job, jobIndex) => (
+                        <div key={jobIndex} className="glassmorphism-dark p-8 rounded-xl shadow-lg border border-gray-600 hover:shadow-xl transition duration-300 ease-in-out text-white" style={{ animationDelay: `${0.1 * jobIndex}s` }}>
+                          <h3 className="text-2xl font-bold text-white mb-2">{job.title}</h3>
+                          <p className="text-xl text-yellow-300 mb-1">{job.company}</p>
+                          <p className="text-gray-200 mb-4 italic">{job.duration}</p>
+
+                          {/* Storytelling Visual Placeholder */}
+                          
+                          
+
+                          <ul className="list-none p-0">
+                            {job.responsibilities.map((responsibility, respIndex) => {
+                              const statementId = `experience-resp-${jobIndex}-${respIndex}`;
+                              const displayStatement = enhancedStatements.get(statementId) || responsibility;
+                              const isLoading = loadingStatementId === statementId;
+
+                              return (
+                                <li key={respIndex} className="flex items-start mb-2 group">
+                                  <svg className="w-5 h-5 text-yellow-300 mr-2 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
+                                  </svg>
+                                  <div className="flex-1 flex flex-col md:flex-row md:items-center justify-between">
+                                    <p className="text-white text-lg flex-grow">{displayStatement}</p>
+                                    <div className="hidden flex space-x-2 mt-2 md:mt-0 md:ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                      <button
+                                        onClick={() => enhanceStatement(responsibility, 'experience-resp', `${jobIndex}-${respIndex}`)}
+                                        className="bg-indigo-700 hover:bg-indigo-800 text-white text-xs px-3 py-1 rounded-full flex items-center justify-center transition duration-200 active:scale-95"
+                                        disabled={isLoading}
+                                        aria-label={`Enhance statement: ${responsibility}`}
+                                      >
+                                        {isLoading ? (
+                                          <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                          </svg>
+                                        ) : (
+                                          '✨ Enhance'
+                                        )}
+                                      </button>
+                                      {enhancedStatements.has(statementId) && (
+                                        <button
+                                          onClick={() => copyToClipboard(enhancedStatements.get(statementId))}
+                                          className="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1 rounded-full transition duration-200 active:scale-95"
+                                          aria-label="Copy enhanced statement to clipboard"
+                                        >
+                                          Copy
+                                        </button>
+                                      )}
+                                    </div>
+                                  </div>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+
+                
+
+                {/* Education Section */}
+                <section id="education" ref={(node) => setSectionRef(node, 'education')} className={`py-10 md:py-16 bg-gray-50 animated-section ${revealedSections['education'] ? 'is-visible' : ''}`}>
+                  <div className="container mx-auto px-4 max-w-4xl">
+                    <SectionTitle>Education & Certifications</SectionTitle>
+                    <div className="space-y-8">
+                      {portfolioData.education.map((edu, index) => (
+                        <div key={index} className="glassmorphism-card p-8 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-[1.02]" style={{ animationDelay: `${0.1 * index}s` }}>
+                          <h3 className="text-2xl font-semibold text-gray-800 mb-2">{edu.degree}</h3>
+                          <p className="text-lg text-indigo-600">{edu.institution}</p>
+                          {edu.note && <p className="text-md font-bold text-indigo-700 mt-1 italic">{edu.note}</p>}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+
+                {/* Accomplishments Section */}
+                <section id="accomplishments" ref={(node) => setSectionRef(node, 'accomplishments')} className={`py-10 md:py-16 bg-white animated-section ${revealedSections['accomplishments'] ? 'is-visible' : ''}`}>
+                  <div className="container mx-auto px-4 max-w-4xl">
+                    <SectionTitle>Accomplishments</SectionTitle>
+                    <div className="glassmorphism-card p-8 rounded-xl shadow-lg border border-gray-200">
+                      <ul className="list-none p-0">
+                        {portfolioData.accomplishments.map((accomplishment, index) => {
+                          const highlightPhrase = "UN-Women council";
+                          const statementId = `accomplishment-${index}`;
+                          const displayStatement = enhancedStatements.get(statementId) || accomplishment;
+                          const isLoading = loadingStatementId === statementId;
+
+                          // Split the string by the highlight phrase, keeping the phrase itself in the array
+                          const parts = displayStatement.split(new RegExp(`(${highlightPhrase})`, 'gi'));
+                          return (
+                            <li key={index} className="flex items-start mb-2 group">
+                              <svg className="w-5 h-5 text-indigo-500 mr-2 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
+                              </svg>
+                              <div className="flex-1 flex flex-col md:flex-row md:items-center justify-between">
+                                <p className="text-gray-700 text-lg flex-grow">
+                                  {parts.map((part, i) =>
+                                    // Check if the part matches the highlight phrase (case-insensitive)
+                                    part.toLowerCase() === highlightPhrase.toLowerCase() ? (
+                                      <span key={i} className="text-indigo-600 font-semibold">
+                                        {part}
+                                      </span>
+                                    ) : (
+                                      part
+                                    )
+                                  )}
+                                </p>
+                                <div className="hidden flex space-x-2 mt-2 md:mt-0 md:ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                  <button
+                                    onClick={() => enhanceStatement(accomplishment, 'accomplishment', index)}
+                                    className="bg-indigo-700 hover:bg-indigo-800 text-white text-xs px-3 py-1 rounded-full flex items-center justify-center transition duration-200 active:scale-95"
+                                    disabled={isLoading}
+                                    aria-label={`Enhance accomplishment: ${accomplishment}`}
+                                  >
+                                    {isLoading ? (
+                                      <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                      </svg>
+                                    ) : (
+                                      '✨ Enhance'
+                                    )}
+                                  </button>
+                                  {enhancedStatements.has(statementId) && (
+                                    <button
+                                      onClick={() => copyToClipboard(enhancedStatements.get(statementId))}
+                                      className="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1 rounded-full transition duration-200 active:scale-95"
+                                      aria-label="Copy enhanced accomplishment to clipboard"
+                                    >
+                                      Copy
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  </div>
+                </section>
+
+                {/* Publications Section */}
+                <section id="publications" ref={(node) => setSectionRef(node, 'publications')} className={`py-10 md:py-16 bg-gray-50 animated-section ${revealedSections['publications'] ? 'is-visible' : ''}`}>
+                  <div className="container mx-auto px-4 max-w-4xl">
+                    <SectionTitle>Publications</SectionTitle>
+                    <div className="glassmorphism-card p-6 rounded-xl shadow-lg border border-gray-200">
+                      <ul className="list-none p-0">
+                        {portfolioData.publications.map((publication, index) => (
+                          <li key={index} className="mb-4 last:mb-0">
+                            <a href={publication.url} target="_blank" rel="noopener noreferrer" className="text-lg font-semibold text-indigo-600 hover:text-indigo-800 transition duration-300">
+                              {publication.title}
+                            </a>
+                            <p className="text-sm text-gray-500 mt-1">{publication.url}</p>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </section>
+
+                {/* Recommendations Section */}
+                <section id="recommendations" ref={(node) => setSectionRef(node, 'recommendations')} className={`py-10 md:py-16 bg-gray-50 animated-section ${revealedSections['recommendations'] ? 'is-visible' : ''}`}>
+                  <div className="container mx-[200px] px-4">
+                    <SectionTitle>LinkedIn Recommendations</SectionTitle>
+                    <div className="flex gap-8">
+                      {portfolioData.recommendations.map((rec, index) => (
+                        <div key={index} className="w-1/2 glassmorphism-card p-8 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-[1.02]" style={{ animationDelay: `${0.1 * index}s` }}>
+                          <p className="text-lg italic text-gray-700 mb-4">"{rec.quote}"</p>
+                          <p className="text-base font-semibold text-indigo-600">- {rec.author}</p>
+                          <p className="text-sm text-gray-500">{rec.title}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+
+                {/* Contact Section */}
+                <section
+  id="contact"
+  ref={(node) => setSectionRef(node, 'contact')}
+  className={`py-16 md:py-24 text-white animated-section ${revealedSections['contact'] ? 'is-visible' : ''}`}
+  style={{ backgroundImage: 'url("/images/b5.jpg")', backgroundSize: 'cover', backgroundPosition: 'center' }}
+>
+                  <div className="container mx-auto px-4 text-center max-w-3xl">
+                      <SectionTitle><span className="text-yellow-300">Get In Touch</span></SectionTitle>
+                    <p className="text-xl mb-8 opacity-90">
+                      I'm always open to new opportunities and collaborations. Feel free to reach out!
+                    </p>
+                    <div className="flex flex-col items-center justify-center space-y-8">
+                      {/* Contact Form */}
+                      <div className="w-full max-w-lg mx-auto">
+                        <ContactForm />
+                      </div>
+
+                      {/* LinkedIn and Email links */}
+                      <div className="glassmorphism-card p-8 rounded-xl shadow-2xl inline-block">
+                        <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8">
+                          <a href={`mailto:${portfolioData.contact.email}`} className="flex items-center text-white hover:text-yellow-300 transition duration-300 transform hover:scale-105 active:scale-95">
+                            <svg className="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                            </svg>
+                            <span className="text-lg">{portfolioData.contact.email}</span>
+                          </a>
+                          <a href={`https://${portfolioData.contact.linkedin}`} target="_blank" rel="noopener noreferrer" className="flex items-center text-white hover:text-yellow-300 transition duration-300 transform hover:scale-105 active:scale-95">
+                            <svg className="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                              <path d="M22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0zM7.12 20.45H3.59V9.06h3.53v11.39zM5.35 7.62c-1.14 0-1.87-.76-1.87-1.72 0-.96.73-1.72 1.87-1.72 1.14 0 1.87.76 1.87 1.72 0 .96-.73 1.72-1.87 1.72zM20.41 20.45h-3.53V14.8c0-1.3-.47-2.19-1.63-2.19-1.25 0-1.99.85-1.99 2.19v5.65h-3.53V9.06h3.53v1.5c.5-.9 1.63-2.05 3.3-2.05 2.4 0 4.2 1.58 4.2 5.06v6.88z"></path>
+                            </svg>
+                            <span className="text-lg">LinkedIn</span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </main>
+
+              {/* Footer */}
+              <footer className="bg-gray-800 text-white py-6">
+                <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+                  {/* Quote Section */}
+                  <div className="mb-4 md:mb-0 md:w-1/2">
+                    <p className="text-sm italic opacity-80">
+                      "Driving impact through strategic vision and empathetic leadership."
+                    </p>
+                  </div>
+                  {/* Copyright and Footer Navigation */}
+                  <div className="md:w-1/2 flex flex-col items-center md:items-end">
+                    {/* Footer Navigation */}
+                    <nav role="navigation" aria-label="Footer Navigation">
+                      <ul className="flex flex-wrap justify-center md:justify-end space-x-4 mb-2 text-sm">
+                        {navLinks.map((link) => (
+                          <li key={link.href}>
+                            <a
+                              href={link.href}
+                              className={`text-gray-300 hover:text-white transition duration-300 ${activeSection === link.href.substring(1) ? 'text-white font-semibold' : ''}`}
+                            >
+                              {link.label}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </nav>
+                    <p className="text-sm">&copy; {new Date().getFullYear()} {portfolioData.name}. All rights reserved.</p>
+                  </div>
+                </div>
+              </footer>
+
+              {/* Custom Message Box */}
+              {messageBox.visible && (
+                <MessageBox
+                  message={messageBox.message}
+                  type={messageBox.type}
+                  onClose={hideMessageBox}
+                />
+              )}
+            </div>
+          );
+        };
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
