@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Inter CDN -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -165,6 +166,8 @@
     </style>
 </head>
 <body>
+  <!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <div id="root"></div>
 
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -348,7 +351,11 @@
               email: "tswaathi@gmail.com", // Phone number removed
               linkedin: "linkedin.com/in/thangaswathiarumugam"
             },
-            summary: "A results-driven leader with 10+ years of experience in client management, branding, marketing, product pricing and end-to-end project execution across B2B, B2C and retail environments. Proven ability to lead cross-functional teams and deliver projects on time and under budget through effective risk mitigation, stakeholder alignment, and Agile methodologies. Skilled in brand storytelling, lead generation, campaign management, and customer engagement. Known for increasing team productivity by 15%, reducing project delays by 25%, reducing product pricing by 25%, and improving operational efficiency by 15%. Currently pursuing PMP® certification to strengthen structured delivery, strategic planning, and project leadership skills.",
+            summary: ["Results-driven Project and Marketing Professional with 10+ years of cross-functional experience in client management, branding, pricing, and end-to-end project execution across B2B, B2C, and retail sectors.",
+            "Proven track record of increasing team productivity by 15%, reducing project delays by 25%, and lowering product pricing by 25%. Adept at leading cross-functional teams using Agile methodologies, stakeholder engagement, and risk mitigation.",
+            "Currently pursuing PMP® certification to enhance structured delivery, strategic planning, and project leadership skills. Skilled in Smartsheet, Jira, Trello, and Miro. Holds an M.A. in Social Work (Psychiatry) from Loyola College, bringing a people-first leadership approach focused on understanding client needs, aligning with product vision, and fostering high-performing teams.",
+            "Awarded Best Employee at Greenpeace India (2016–2017) for leading high-impact campaigns and optimizing resource allocation."
+          ],
             organizationalSkills: [
               "Project Planning, Execution & Delivery",
               "Process Optimization & Workflow Management",
@@ -492,22 +499,26 @@
             ],
             education: [
               {
-                degree: "PMP Certification (In-Progress)",
+                degree: "PMP Certification",
+                description: "Currently pursuing PMP® certification; successfully completed 35 PDUs of PMP training and passed the comprehensive PMP assessment from Simplilearn, covering Agile, Scrum, risk planning, stakeholder engagement, and PMI-aligned methodologies.",
                 institution: "Project Management Institute"
               },
               {
                 degree: "Executive Program in Product Management",
-                institution: "XLRI"
+                institution: "XLRI",
+                ref: "yes"
               },
               {
                 degree: "M.A. Social Work in Psychiatry",
                 institution: "Loyola College",
-                note: "Internationally recognized by WES"
+                note: "Internationally recognized by WES",
+                ref: "yes"
               },
               {
                 degree: "B.A. Corporate Economics",
                 institution: "Women's Christian College",
-                note: "Internationally recognized by WES"
+                note: "Internationally recognized by WES",
+                ref: "yes"
               }
             ],
             accomplishments: [
@@ -585,11 +596,7 @@ God Bless - Swaths!`,
                 title: "Director & Founder at Learning Bridge Services"
               },
               {
-                quote: `What stands out about Thangaswathi is her passion, energy and empathic nature. I am constantly in awe of her dedication to make a difference in the world, be it through raising funds in her day job, reaching out to those in need through counselling, or being the leader in her community and spreading kindness over the weekends with The Goodwill Tribe. Thangaswathi has been trustable, responsible and can take on tasks independently. She is extremely approachable, proactive and ensures that tasks are followed through till the end. She's got a zesty spirit and will be a gift to any organisation or setting.
-
-With kindness,
-Sonia Parekh
-Co-founder`,
+                quote: `What stands out about Thangaswathi is her passion, energy and empathic nature. I am constantly in awe of her dedication to make a difference in the world, be it through raising funds in her day job, reaching out to those in need through counselling, or being the leader in her community and spreading kindness over the weekends with The Goodwill Tribe. Thangaswathi has been trustable, responsible and can take on tasks independently. She is extremely approachable, proactive and ensures that tasks are followed through till the end. She's got a zesty spirit and will be a gift to any organisation or setting.`,
                 author:"Sonia Parekh",
                 title: "Cofounder at The Goodwill Tribe"
               }
@@ -1010,7 +1017,7 @@ Co-founder`,
                         <div className="flex w-full justify-center items-end"> 
                         Learn More About Me
                         <img
-                          src="./GIF/about_me.gif"
+                          src="./GIF/About_me.gif"
                           alt="Placeholder profile photo"
                           className={`w-auto h-7 object-cover ${heroAnimated ? 'animate-fadeInZoomIn' : 'opacity-0'}`}
                           style={{ animationDelay: '0.2s' }}
@@ -1023,7 +1030,7 @@ Co-founder`,
                 </section>
 
                 {/* About Me Section */}
-                <section id="about" ref={(node) => setSectionRef(node, 'about')} className={`py-10 md:py-8 bg-white animated-section ${revealedSections['about'] ? 'is-visible' : ''}`}>
+                <section id="about" ref={(node) => setSectionRef(node, 'about')} style={{scrollMarginTop: '100px'}} className={`py-10 md:py-8 bg-white animated-section ${revealedSections['about'] ? 'is-visible' : ''}`}>
                   <div className="container mx-auto px-4 max-w-4xl">
                     <SectionTitle>
                       <div className="flex w-full justify-center items-end"> 
@@ -1038,15 +1045,17 @@ Co-founder`,
                       </div>
                       </SectionTitle>
                     <div className="glassmorphism-card p-8 rounded-xl shadow-lg border border-gray-200">
-                      <p className="text-lg leading-relaxed text-gray-700">
-                        {portfolioData.summary}
+                    {portfolioData.summary.map((para, idx) => (
+                      <p key={idx} className="text-lg leading-relaxed text-gray-700 mb-4 last:mb-0">
+                        {para}
                       </p>
-                    </div>
+                    ))}
+                  </div>                  
                   </div>
                 </section>
 
                 {/* Skills Section */}
-                <section id="skills" ref={(node) => setSectionRef(node, 'skills')} className={`py-10 md:py-8 bg-gray-50 animated-section ${revealedSections['skills'] ? 'is-visible' : ''}`}>
+                <section id="skills" ref={(node) => setSectionRef(node, 'skills')}  style={{scrollMarginTop: '100px'}} className={`py-10 md:py-8 bg-gray-50 animated-section ${revealedSections['skills'] ? 'is-visible' : ''}`}>
                   <div className="container mx-auto px-4 max-w-4xl">
                     <SectionTitle>
                       <div className="flex w-full justify-center items-end"> 
@@ -1109,7 +1118,7 @@ Co-founder`,
                 {/* Experience Section - Now with Parallax Effect and improved visibility */}
                 <section
                   id="experience"
-                  ref={(node) => setSectionRef(node, 'experience')}
+                  ref={(node) => setSectionRef(node, 'experience')}  style={{scrollMarginTop: '100px'}}
                   className={`py-10 md:py-4 text-white parallax-section animated-section ${revealedSections['experience'] ? 'is-visible' : ''}`}
                 >
                   <div className="parallax-overlay"></div>
@@ -1125,9 +1134,9 @@ Co-founder`,
                         />
 
                       </div>
-                      </SectionTitle>
-                    <div className="space-y-12">
-                      {portfolioData.experience.map((job, jobIndex) => (
+                    </SectionTitle>
+                    <div className="space-y-12 relative">
+                         {portfolioData.experience.map((job, jobIndex) => (
                         <div key={jobIndex} className="glassmorphism-dark p-8 rounded-xl shadow-lg border border-gray-700 hover:shadow-xl transition duration-300 ease-in-out text-white" style={{ animationDelay: `${0.1 * jobIndex}s` }}>
                           <h3 className="text-2xl font-bold text-white mb-2">{job.title}</h3>
                           <p className="text-xl text-yellow-300 mb-1">{job.company}</p>
@@ -1190,7 +1199,7 @@ Co-founder`,
                 
 
                 {/* Education Section */}
-                <section id="education" ref={(node) => setSectionRef(node, 'education')} className={`py-10 md:py-8 bg-gray-50 animated-section ${revealedSections['education'] ? 'is-visible' : ''}`}>
+                <section id="education" ref={(node) => setSectionRef(node, 'education')}  style={{scrollMarginTop: '100px'}} className={`py-10 md:py-8 bg-gray-50 animated-section ${revealedSections['education'] ? 'is-visible' : ''}`}>
                   <div className="container mx-auto px-4 max-w-4xl">
                     <SectionTitle>
                       <div className="flex gap-2 w-full justify-center items-end"> 
@@ -1209,7 +1218,9 @@ Co-founder`,
                         <div key={index} className="glassmorphism-card p-8 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-[1.02]" style={{ animationDelay: `${0.1 * index}s` }}>
                           <h3 className="text-2xl font-semibold text-gray-800 mb-2">{edu.degree}</h3>
                           <p className="text-lg text-indigo-600">{edu.institution}</p>
+                          {edu.description && <p className="text-sm font-semibold">{edu.description}</p>}
                           {edu.note && <p className="text-md font-bold text-indigo-700 mt-1 italic">{edu.note}</p>}
+                          {edu.ref && <span className="flex space-x-1"><p className="text-sm font-bold italic">**Reference/Certificate ID:** </p> <a href="#contact" className="text-sm font-bold text-indigo-500 italic">For verification of this ID, please contact me directly.</a></span>}
                         </div>
                       ))}
                     </div>
@@ -1217,7 +1228,7 @@ Co-founder`,
                 </section>
 
                 {/* Accomplishments Section */}
-                <section id="accomplishments" ref={(node) => setSectionRef(node, 'accomplishments')} className={`py-10 md:py-8 bg-white animated-section ${revealedSections['accomplishments'] ? 'is-visible' : ''}`}>
+                <section id="accomplishments" ref={(node) => setSectionRef(node, 'accomplishments')}  style={{scrollMarginTop: '100px'}} className={`py-10 md:py-8 bg-white animated-section ${revealedSections['accomplishments'] ? 'is-visible' : ''}`}>
                   <div className="container mx-auto px-4 max-w-4xl">
                     <SectionTitle>
                        <div className="flex gap-2 w-full justify-center items-end"> 
@@ -1295,7 +1306,7 @@ Co-founder`,
                 </section>
 
                 {/* Publications Section */}
-                <section id="publications" ref={(node) => setSectionRef(node, 'publications')} className={`py-10 md:py-8 bg-gray-50 animated-section ${revealedSections['publications'] ? 'is-visible' : ''}`}>
+                <section id="publications" ref={(node) => setSectionRef(node, 'publications')}  style={{scrollMarginTop: '100px'}} className={`py-10 md:py-8 bg-gray-50 animated-section ${revealedSections['publications'] ? 'is-visible' : ''}`}>
                   <div className="container mx-auto px-4 max-w-4xl">
                     <SectionTitle>
                    <div className="flex gap-2 w-full justify-center items-center"> 
@@ -1312,11 +1323,11 @@ Co-founder`,
                     <div className="glassmorphism-card p-6 rounded-xl shadow-lg border border-gray-200">
                       <ul className="list-none p-0">
                         {portfolioData.publications.map((publication, index) => (
-                          <li key={index} className="mb-4 last:mb-0">
-                            <a href={publication.url} target="_blank" rel="noopener noreferrer" className="text-lg font-semibold text-indigo-600 hover:text-indigo-800 transition duration-300">
+                          <li key={index} className="mb-4 last:mb-0"> 
+                            <a href={publication.url} target="_blank" rel="noopener noreferrer" className="text-lg hover:text-xl font-semibold text-indigo-400 hover:text-indigo-800 transition duration-300">
                               {publication.title}
                             </a>
-                            <p className="text-sm text-gray-500 mt-1">{publication.url}</p>
+                            {/*<a href={publication.url} target="_blank" className="text-sm text-gray-500 mt-1">(click here)</a>*/}
                           </li>
                         ))}
                       </ul>
@@ -1325,7 +1336,7 @@ Co-founder`,
                 </section>
 
                 {/* Recommendations Section */} 
-                <section id="recommendations" ref={(node) => setSectionRef(node, 'recommendations')} className={`py-10 md:py-8 bg-gray-50 animated-section ${revealedSections['recommendations'] ? 'is-visible' : ''}`}>
+                <section id="recommendations" ref={(node) => setSectionRef(node, 'recommendations')}  style={{scrollMarginTop: '100px'}} className={`py-10 md:py-8 bg-gray-50 animated-section ${revealedSections['recommendations'] ? 'is-visible' : ''}`}>
                   <div className="container mx-auto max-w-4xl px-4">
                     <SectionTitle>
                       <div className="flex gap-2 w-full justify-center items-center"> 
@@ -1354,7 +1365,7 @@ Co-founder`,
 
                 {/* Contact Section */} 
                 <section
-  id="contact"
+  id="contact" 
   ref={(node) => setSectionRef(node, 'contact')}
   className={`py-16 md:py-24 text-white animated-section ${revealedSections['contact'] ? 'is-visible' : ''}`}
   style={{ backgroundImage: 'url("./images/b5.jpg")', backgroundSize: 'cover', backgroundPosition: 'center' }}
