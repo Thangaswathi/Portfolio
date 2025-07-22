@@ -431,6 +431,7 @@ const toggleResponsibilities = (index) => {
                 responsibilities: [
                   "Led the ideation, creation, and release of two flagship products, working alongside product, design, and engineering teams to synchronize with client requirements and business objectives.",
                   "Coordinated with CXOs to ensure alignment of project strategies with business objectives, directing multi-disciplinary teams to attain significant results for both B2B and B2C domains.",
+                  "Managed end-to-end product and project roadmaps, from initial ideation and strategic definition to successful execution and launch, ensuring alignment with market demands and business objectives.",
                   "Developed and implemented lead generation strategies via online and offline marketing channels, utilizing upselling and cross-selling to fuel growth and deepen client relationships.",
                   "Developed and implemented creative branding campaigns that pushed market visibility up and boosted team performance by 20%, working with cross-functional teams to deliver high-quality marketing materials (content, posters, website/app/portal visuals, reports, promotional videos).",
                   "Handled vendor relations, negotiated agreements, worked with legal papers, performed price analysis, product pricing and ensured compliance, while coordinating deliverables to fulfill project needs.",
@@ -1063,7 +1064,7 @@ One of her most notable strengths is her ability to adapt to changing circumstan
                 </section>
 
                 {/* About Me Section */}
-                <section id="about" ref={(node) => setSectionRef(node, 'about')} style={{scrollMarginTop: '100px'}} className={`py-10 md:py-8 bg-white animated-section ${revealedSections['about'] ? 'is-visible' : ''}`}>
+                <section id="about" ref={(node) => setSectionRef(node, 'about')} style={{scrollMarginTop: '100px'}} className={`py-4 md:py-2 bg-white animated-section ${revealedSections['about'] ? 'is-visible' : ''}`}>
                   <div className="container mx-auto px-4 max-w-4xl">
                     <SectionTitle>
                       <div className="flex w-full justify-center items-end"> 
@@ -1088,7 +1089,7 @@ One of her most notable strengths is her ability to adapt to changing circumstan
                 </section>
 
                 {/* Skills Section */}
-                <section id="skills" ref={(node) => setSectionRef(node, 'skills')}  style={{scrollMarginTop: '100px'}} className={`py-10 md:py-8 bg-gray-50 animated-section ${revealedSections['skills'] ? 'is-visible' : ''}`}>
+                <section id="skills" ref={(node) => setSectionRef(node, 'skills')}  style={{scrollMarginTop: '100px'}} className={`pt-1 pb-6 bg-gray-50 animated-section ${revealedSections['skills'] ? 'is-visible' : ''}`}>
                   <div className="container mx-auto px-4 max-w-4xl">
                     <SectionTitle>
                       <div className="flex w-full justify-center items-end"> 
@@ -1104,7 +1105,7 @@ One of her most notable strengths is her ability to adapt to changing circumstan
                       </SectionTitle>
 
                     {/* Horizontal Logos for Technical Skills */}
-                    <div className="flex flex-wrap justify-center items-center gap-6 mb-12">
+                    <div className="flex flex-wrap justify-center items-center gap-6 mb-4">
                       {portfolioData.technicalSkillsLogos.map((skill, index) => (
                         <div
                           key={index}
@@ -1152,7 +1153,7 @@ One of her most notable strengths is her ability to adapt to changing circumstan
                 <section
                   id="experience"
                   ref={(node) => setSectionRef(node, 'experience')}  style={{scrollMarginTop: '100px'}}
-                  className={`py-10 md:py-4 text-white parallax-section bg-[#555555] animated-section ${revealedSections['experience'] ? 'is-visible' : ''}`}
+                  className={`py-4 md:py-2 text-white parallax-section bg-[#555555] animated-section ${revealedSections['experience'] ? 'is-visible' : ''}`}
                 >
                   <div className="container mx-auto px-4 max-w-5xl parallax-content">
                     <SectionTitle>
@@ -1234,7 +1235,7 @@ One of her most notable strengths is her ability to adapt to changing circumstan
                 
 
                 {/* Education Section */}
-                <section id="education" ref={(node) => setSectionRef(node, 'education')}  style={{scrollMarginTop: '100px'}} className={`py-10 md:py-8 bg-gray-50 animated-section ${revealedSections['education'] ? 'is-visible' : ''}`}>
+                <section id="education" ref={(node) => setSectionRef(node, 'education')}  style={{scrollMarginTop: '100px'}} className={`py-4 md:py-3 bg-gray-50 animated-section ${revealedSections['education'] ? 'is-visible' : ''}`}>
                   <div className="container mx-auto px-4 max-w-4xl">
                     <SectionTitle>
                       <div className="flex gap-2 w-full justify-center items-end"> 
@@ -1263,7 +1264,7 @@ One of her most notable strengths is her ability to adapt to changing circumstan
                 </section>
 
                 {/* Accomplishments Section */}
-                <section id="accomplishments" ref={(node) => setSectionRef(node, 'accomplishments')}  style={{scrollMarginTop: '100px'}} className={`py-10 md:py-8 bg-white animated-section ${revealedSections['accomplishments'] ? 'is-visible' : ''}`}>
+                <section id="accomplishments" ref={(node) => setSectionRef(node, 'accomplishments')}  style={{scrollMarginTop: '100px'}} className={`py-4 md:py-3 bg-white animated-section ${revealedSections['accomplishments'] ? 'is-visible' : ''}`}>
                   <div className="container mx-auto px-4 max-w-4xl">
                     <SectionTitle>
                        <div className="flex gap-2 w-full justify-center items-end"> 
@@ -1341,7 +1342,7 @@ One of her most notable strengths is her ability to adapt to changing circumstan
                 </section>
 
                 {/* Publications Section */}
-                <section id="publications" ref={(node) => setSectionRef(node, 'publications')}  style={{scrollMarginTop: '100px'}} className={`py-10 md:py-8 bg-gray-50 animated-section ${revealedSections['publications'] ? 'is-visible' : ''}`}>
+                <section id="publications" ref={(node) => setSectionRef(node, 'publications')}  style={{scrollMarginTop: '100px'}} className={`py-4 md:py-3 bg-gray-50 animated-section ${revealedSections['publications'] ? 'is-visible' : ''}`}>
                   <div className="container mx-auto px-4 max-w-4xl">
                     <SectionTitle>
                    <div className="flex gap-2 w-full justify-center items-center"> 
@@ -1371,7 +1372,7 @@ One of her most notable strengths is her ability to adapt to changing circumstan
                 </section>
 
                 {/* Recommendations Section */} 
-                <section id="recommendations" ref={(node) => setSectionRef(node, 'recommendations')}  style={{scrollMarginTop: '100px'}} className={`py-10 md:py-8 bg-gray-50 animated-section ${revealedSections['recommendations'] ? 'is-visible' : ''}`}>
+                <section id="recommendations" ref={(node) => setSectionRef(node, 'recommendations')}  style={{scrollMarginTop: '100px'}} className={`py-4 md:py-5 bg-gray-50 animated-section ${revealedSections['recommendations'] ? 'is-visible' : ''}`}>
                   <div className="container mx-auto max-w-4xl px-4">
                     <SectionTitle>
                       <div className="flex gap-2 w-full justify-center items-center"> 
