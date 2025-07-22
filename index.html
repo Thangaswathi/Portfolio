@@ -126,7 +126,7 @@
         }
 
         .mobile-menu {
-            margin-top: 35px;
+          margin-top: 40px;
           width: 25%; /* Adjust as needed */
           background-color: #fff;
           padding: 2rem;
@@ -134,6 +134,12 @@
           transform: translateX(100%);
           transition: transform 0.3s ease-out;
         }
+        
+        @media (min-width: 300px) and (max-width: 789px) {
+            .mobile-menu {
+              width: 75% !important;
+            }
+          }
 
         .mobile-menu.open {
           transform: translateX(0);
@@ -208,6 +214,13 @@
 
           // State for mobile menu visibility
           const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+          const [expandedIndex, setExpandedIndex] = useState(null);
+
+const toggleResponsibilities = (index) => {
+  setExpandedIndex(expandedIndex === index ? null : index);
+};
+
 
 
           // Callback to set ref for each section
@@ -318,45 +331,7 @@
             }
           }, []);
 
-          // Function to enhance a statement using Gemini API
-        //   const enhanceStatement = async (statementText, sectionName, index) => {
-        //     const statementId = `${sectionName}-${index}`;
-        //     setLoadingStatementId(statementId); // Set loading for this specific statement
-
-        //     try {
-        //       const prompt = `Rewrite the following professional statement to be more impactful, concise (1-2 sentences), using strong action verbs and highlighting quantifiable results if possible, for a resume/portfolio context: "${statementText}"`;
-
-        //       let chatHistory = [];
-        //       chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-        //       const payload = { contents: chatHistory };
-        //       const apiKey = ""; // Canvas will automatically provide this in runtime
-        //       const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-        //       const response = await fetch(apiUrl, {
-        //         method: 'POST',
-        //         headers: { 'Content-Type': 'application/json' },
-        //         body: JSON.stringify(payload)
-        //       });
-
-        //       const result = await response.json();
-
-        //       if (result.candidates && result.candidates.length > 0 &&
-        //         result.candidates[0].content && result.candidates[0].content.parts &&
-        //         result.candidates[0].content.parts.length > 0) {
-        //         const enhancedText = result.candidates[0].content.parts[0].text;
-        //         setEnhancedStatements(prev => new Map(prev.set(statementId, enhancedText)));
-        //       } else {
-        //         showMessageBox('Failed to enhance statement. Please try again.', 'error');
-        //         console.error('Gemini API response structure unexpected:', result);
-        //       }
-        //     } catch (error) {
-        //       showMessageBox('Error enhancing statement. Please check your network connection.', 'error');
-        //       console.error('Error calling Gemini API:', error);
-        //     } finally {
-        //       setLoadingStatementId(null); // Clear loading state
-        //     }
-        //   };
-
+ 
           // Function to copy text to clipboard
           const copyToClipboard = (text) => {
             const textarea = document.createElement('textarea');
@@ -582,6 +557,41 @@
             ],
             recommendations: [
               {
+                quote: `S – Strong – Resilient in mind, body, and purpose.
+                        W – Wonder-driven – Fuelled by questions, not afraid to ask why.
+                        A – Adaptable – Quick to learn, quicker to evolve.
+                        T – Thoughtful – Reflective, intentional, and deeply aware.
+                        H – Hungry – For knowledge, growth, and meaningful change.
+                        I – Intuitive – Guided by inner wisdom and sharp perception. 
+
+                        "That’s Swathi in brief—but to leave it at that would fall short of capturing the real force she is and the impression she made."
+                        Meet Swathi – a force of intention and curiosity.
+                        "I had the privilege of witnessing her journey through the ASCEND leadership program at Stellar Innovations—a space where she truly came into her own."
+                        From the very first session, Swathi stood out—not by trying to impress, but by showing up with purpose. She listened with intent, questioned with courage, and engaged with the kind of sincerity that reminds you why training matters.
+                        She wasn’t afraid to ask the questions others were only thinking. That alone takes bravery. But more than that, her questions came from a place of wanting to grow—not just for herself, but so she could give back better, lead stronger, and create change where it counts.
+                        There’s a quiet fire in her—a mix of awareness, grit, and a deep desire to make her life count for something bigger than just herself. She doesn’t just participate—she leans in, reflects, and challenges the status quo with grace.
+                        Swathi is the kind of woman who will keep growing, keep questioning, and keep showing up fully. And in doing so, she won’t just change her path—she’ll leave every space she walks into a little more thoughtful, a little more inspired, and a whole lot better.
+
+                        All the best, my dear girl,
+                        Go light up the sky, give your dreams a twirl.
+                        With fire in your heart and stars in your eyes,
+                        You’re meant for mountains, not just the skies.
+
+                        Shine bright, don’t ever dim your spark,
+                        Even in storms, you leave your mark.
+                        Soar high where eagles fear to fly,
+                        With grace in your stride and head held high.
+
+                        And when the world gets loud or far—
+                        Roar like the lioness you truly are.
+                        Bold, fierce, with a spirit so free—
+                        The world’s not ready for all you’ll be.
+
+                        God Bless - Swaths!`,
+                author: "Deborah Ephraim (Debbie)",
+                title: "Director & Founder at Learning Bridge Services"
+              },
+              {
                 quote: `I am delighted to write a recommendation for Thangaswathi, who had the privilege of working with her at Greenpeace. Throughout her time at our organisation, she consistently demonstrated outstanding dedication, professionalism, and a strong commitment to achieving results.
 
 Swathi was an integral part of our team, contributing her expertise and passion to outrech work. She exhibited exceptional communication skills, which allowed her to collaborate effectively with both colleagues and corporate. She consistently displayed a proactive attitude, always eager to take on new challenges and deliver high-quality results.
@@ -589,41 +599,6 @@ Swathi was an integral part of our team, contributing her expertise and passion 
 One of her most notable strengths is her ability to adapt to changing circumstances and excel under pressure. She consistently met deadlines , even in the face of tight schedules and demanding situations . She has an impressive work ethic and consistently went above and beyond to ensure the success of our team and targets. It is without reservation that I recommend Swathi and believe she will be a valuable addition to any organization fortunate enough to have her on board.Thangaswathi is an exceptionally dedicated and results-oriented professional. Her ability to manage complex projects and deliver under pressure is truly commendable. She consistently goes above and beyond to ensure success.`,
                 author: "Sebastian",
                 title: "Sr. Territory Manager at Greenpeace India"
-              },
-              {
-                quote: `S – Strong – Resilient in mind, body, and purpose.
-W – Wonder-driven – Fuelled by questions, not afraid to ask why.
-A – Adaptable – Quick to learn, quicker to evolve.
-T – Thoughtful – Reflective, intentional, and deeply aware.
-H – Hungry – For knowledge, growth, and meaningful change.
-I – Intuitive – Guided by inner wisdom and sharp perception. 
-
-"That’s Swathi in brief—but to leave it at that would fall short of capturing the real force she is and the impression she made."
-Meet Swathi – a force of intention and curiosity.
-"I had the privilege of witnessing her journey through the ASCEND leadership program at Stellar Innovations—a space where she truly came into her own."
-From the very first session, Swathi stood out—not by trying to impress, but by showing up with purpose. She listened with intent, questioned with courage, and engaged with the kind of sincerity that reminds you why training matters.
-She wasn’t afraid to ask the questions others were only thinking. That alone takes bravery. But more than that, her questions came from a place of wanting to grow—not just for herself, but so she could give back better, lead stronger, and create change where it counts.
-There’s a quiet fire in her—a mix of awareness, grit, and a deep desire to make her life count for something bigger than just herself. She doesn’t just participate—she leans in, reflects, and challenges the status quo with grace.
-Swathi is the kind of woman who will keep growing, keep questioning, and keep showing up fully. And in doing so, she won’t just change her path—she’ll leave every space she walks into a little more thoughtful, a little more inspired, and a whole lot better.
-
-All the best, my dear girl,
-Go light up the sky, give your dreams a twirl.
-With fire in your heart and stars in your eyes,
-You’re meant for mountains, not just the skies.
-
-Shine bright, don’t ever dim your spark,
-Even in storms, you leave your mark.
-Soar high where eagles fear to fly,
-With grace in your stride and head held high.
-
-And when the world gets loud or far—
-Roar like the lioness you truly are.
-Bold, fierce, with a spirit so free—
-The world’s not ready for all you’ll be.
-
-God Bless - Swaths!`,
-                author: "Deborah Ephraim (Debbie)",
-                title: "Director & Founder at Learning Bridge Services"
               },
               {
                 quote: `What stands out about Thangaswathi is her passion, energy and empathic nature. I am constantly in awe of her dedication to make a difference in the world, be it through raising funds in her day job, reaching out to those in need through counselling, or being the leader in her community and spreading kindness over the weekends with The Goodwill Tribe. Thangaswathi has been trustable, responsible and can take on tasks independently. She is extremely approachable, proactive and ensures that tasks are followed through till the end. She's got a zesty spirit and will be a gift to any organisation or setting.`,
@@ -941,9 +916,9 @@ God Bless - Swaths!`,
               </style>
 
               {/* Header/Navigation */}
-              <header className="bg-white shadow-md py-4 sticky top-0 z-50">
+              <header className="bg-white shadow-md sticky top-0 z-50">
                 <nav role="navigation" className="container mx-auto px-4 flex justify-between items-center">
-                  <div className="text-2xl font-bold text-indigo-600 rounded-lg p-2">
+                  <div className="text-xl font-bold text-indigo-600 rounded-lg p-2">
                     <div className="flex w-full justify-center items-center">
                       {portfolioData.name}
                         <img
@@ -1000,7 +975,7 @@ God Bless - Swaths!`,
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
                       </svg>
                     </button>
-                    <ul className="flex flex-col space-y-4 mt-10">
+                    <ul className="flex flex-col space-y-4 mt-14">
                       {navLinks.map((link) => (
                         <li key={link.href}>
                           <a
@@ -1165,64 +1140,67 @@ God Bless - Swaths!`,
 
                       </div>
                     </SectionTitle>
-                    <div className="space-y-12 relative">
-                         {portfolioData.experience.map((job, jobIndex) => (
-                        <div key={jobIndex} className="glassmorphism-dark p-8 rounded-xl shadow-lg border border-gray-700 hover:shadow-xl transition duration-300 ease-in-out text-white" style={{ animationDelay: `${0.1 * jobIndex}s` }}>
-                          <h3 className="text-2xl font-bold text-white mb-2">{job.title}</h3>
-                          <p className="text-xl text-yellow-300 mb-1">{job.company}</p>
-                          <p className="text-gray-200 mb-4 italic">{job.duration}</p>
+                    <div className="space-y-6 relative">
+                      {portfolioData.experience.map((job, jobIndex) => (
+                        <div
+                          key={jobIndex}
+                          className="glassmorphism-dark p-8 rounded-xl shadow-lg border border-gray-700 hover:shadow-xl transition duration-300 ease-in-out text-white"
+                          style={{ animationDelay: `${0.1 * jobIndex}s` }}
+                        >
+                          <div
+                            className="cursor-pointer"
+                            onClick={() => toggleResponsibilities(jobIndex)}
+                          >
+                            <div className="flex justify-between items-center">
+                              <div>
+                                <h3 className="text-2xl font-bold text-white mb-2">{job.title}</h3>
+                                <p className="text-xl text-yellow-300 mb-1">{job.company}</p>
+                                <p className="text-gray-200 italic">{job.duration}</p>
+                              </div>
+                              <div className="mr-10">
+                                <img
+                                  src="./GIF/Scroll_Down_Arrow.gif"
+                                  alt="drop down"
+                                  className={`w-auto hidden h-12 object-cover ${heroAnimated ? 'animate-fadeInZoomIn' : 'opacity-0'}`}
+                                  style={{ animationDelay: '0.2s' }}
+                                />
+                                
+                                <svg class="w-8 h-8 text-yellow-300 rounded-full border-2 border-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 10 4 4 4-4"/>
+                                </svg>
 
-                          {/* Storytelling Visual Placeholder */}
-                          
-                          
 
-                          <ul className="list-none p-0">
-                            {job.responsibilities.map((responsibility, respIndex) => {
-                              const statementId = `experience-resp-${jobIndex}-${respIndex}`;
-                              const displayStatement = enhancedStatements.get(statementId) || responsibility;
-                              const isLoading = loadingStatementId === statementId;
+                              </div>
+                              
+                            </div>
+                          </div>
 
-                              return (
+                          {expandedIndex === jobIndex && (
+                            <ul className="list-none p-0 mt-4">
+                              {job.responsibilities.map((responsibility, respIndex) => (
                                 <li key={respIndex} className="flex items-start mb-2 group">
-                                  <svg className="w-5 h-5 text-yellow-300 mr-2 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
+                                  <svg
+                                    className="w-5 h-5 text-yellow-300 mr-2 flex-shrink-0 mt-1"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                  >
+                                    <path
+                                      fillRule="evenodd"
+                                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                      clipRule="evenodd"
+                                    ></path>
                                   </svg>
                                   <div className="flex-1 flex flex-col md:flex-row md:items-center justify-between">
-                                    <p className="text-white text-lg flex-grow">{displayStatement}</p>
-                                    <div className="hidden flex space-x-2 mt-2 md:mt-0 md:ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                      <button
-                                        onClick={() => enhanceStatement(responsibility, 'experience-resp', `${jobIndex}-${respIndex}`)}
-                                        className="bg-indigo-700 hover:bg-indigo-800 text-white text-xs px-3 py-1 rounded-full flex items-center justify-center transition duration-200 active:scale-95"
-                                        disabled={isLoading}
-                                        aria-label={`Enhance statement: ${responsibility}`}
-                                      >
-                                        {isLoading ? (
-                                          <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                          </svg>
-                                        ) : (
-                                          '✨ Enhance'
-                                        )}
-                                      </button>
-                                      {enhancedStatements.has(statementId) && (
-                                        <button
-                                          onClick={() => copyToClipboard(enhancedStatements.get(statementId))}
-                                          className="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1 rounded-full transition duration-200 active:scale-95"
-                                          aria-label="Copy enhanced statement to clipboard"
-                                        >
-                                          Copy
-                                        </button>
-                                      )}
-                                    </div>
+                                    <p className="text-white text-lg flex-grow">{responsibility}</p>
                                   </div>
                                 </li>
-                              );
-                            })}
-                          </ul>
+                              ))}
+                            </ul>
+                          )}
                         </div>
                       ))}
                     </div>
+
                   </div>
                 </section>
 
@@ -1405,8 +1383,8 @@ God Bless - Swaths!`,
                         </div>
 
                         {/* Place nav buttons OUTSIDE the swiper but still within the same relative container */}
-                        <div className="swiper-button-prev absolute top-1/2 -left-10 transform -translate-y-1/2 z-10" />
-                        <div className="swiper-button-next absolute top-1/2 -right-10 transform -translate-y-1/2 z-10" />
+                        <div className="swiper-button-prev absolute top-1/2 -left-10 transform -translate-y-1/2 z-10 hidden md:block" />
+                        <div className="swiper-button-next absolute top-1/2 -right-10 transform -translate-y-1/2 z-10 hidden md:block" />
                       </div>
                   </div>
                 </section>
