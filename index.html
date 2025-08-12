@@ -1024,7 +1024,10 @@ One of her most notable strengths is her ability to adapt to changing circumstan
               {/* Main Content Area - Target for "Skip to main content" link */}
               <main id="main-content">
                 {/* Home/Hero Section */}
-                <section id="home" ref={(node) => setSectionRef(node, 'home')} className={`relative text-white py-16 md:py-24 flex items-center justify-center min-h-[calc(100vh-80px)] animated-section ${revealedSections['home'] ? 'is-visible' : ''}`} style={{ backgroundImage: 'url("./images/b10.webp")', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                <section id="home" ref={(node) => setSectionRef(node, 'home')} className={`relative text-white py-16 md:py-24 flex items-center justify-center min-h-[calc(100vh-80px)] animated-section ${revealedSections['home'] ? 'is-visible' : ''}`} >
+                  <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900"></div>
+                  <div class="absolute inset-0 bg-black bg-opacity-50"></div> 
+
                   <div className="container mx-auto px-4 text-center">
                     <div className={`glassmorphism-card p-8 md:p-12 rounded-xl shadow-2xl max-w-3xl mx-auto flex flex-col items-center transform hover:scale-105 transition duration-500 ease-in-out`}>
                       {/* Profile Photo - Always use placeholder now */}
@@ -1150,84 +1153,97 @@ One of her most notable strengths is her ability to adapt to changing circumstan
 
                 {/* Experience Section - Now with Parallax Effect and improved visibility */}
                 <section
-                  id="experience"
-                  ref={(node) => setSectionRef(node, 'experience')}  style={{scrollMarginTop: '100px'}}
-                  className={`py-4 md:py-2 text-white parallax-section bg-[#555555] animated-section ${revealedSections['experience'] ? 'is-visible' : ''}`}
+                id="experience"
+                ref={(node) => setSectionRef(node, 'experience')}
+                style={{ scrollMarginTop: '100px' }}
+                className={`py-6 text-white relative bg-[#111827] parallax-section animated-section ${
+                    revealedSections['experience'] ? 'is-visible' : ''
+                }`}
                 >
-                  <div className="container mx-auto px-4 max-w-5xl parallax-content">
-                    <SectionTitle>
-                      <div className="flex gap-2 w-full justify-center items-center"> 
-                      <span className="text-white">Professional Experience</span>
-                        <img
-                          src="./GIF/Professional_Exp.gif"
-                          alt="Placeholder profile photo"
-                          className={`w-auto h-24 object-cover ${heroAnimated ? 'animate-fadeInZoomIn' : 'opacity-0'}`}
-                          style={{ animationDelay: '0.2s' }}
-                        />
-                      </div>
-                    </SectionTitle>
-                    <div className="space-y-6 relative">
-                      {portfolioData.experience.map((job, jobIndex) => (
-                        <div
-                          key={jobIndex}
-                          className="glassmorphism-dark p-8 rounded-xl shadow-lg border border-gray-700 group hover:shadow-xl hover:scale-[1.02] transition duration-300 ease-in-out text-white "
-                          style={{ animationDelay: `${0.1 * jobIndex}s` }}
-                        >
-                          <div
-                            className="cursor-pointer"
-                            onClick={() => toggleResponsibilities(jobIndex)}
-                          >
-                            <div className="flex justify-between items-center">
-                              <div>
-                                <h3 className="text-2xl font-bold text-white mb-2">{job.title}</h3>
-                                <p className="text-xl text-yellow-300 mb-1">{job.company}</p>
-                                <p className="text-gray-200 italic">{job.duration}</p>
-                              </div>
-                              <div className="mr-10">
-                                <img
-                                  src="./GIF/Scroll_Down_Arrow.gif"
-                                  alt="drop down"
-                                  className={`w-auto hidden h-12 object-cover ${heroAnimated ? 'animate-fadeInZoomIn' : 'opacity-0'}`}
-                                  style={{ animationDelay: '0.2s' }}
-                                />
-                                
-                                <svg class="w-8 h-8 text-white group-hover:text-yellow-300 rounded-full border-2 border-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 10 4 4 4-4"/>
-                                </svg>
-
-
-                              </div>
-                              
-                            </div>
-                          </div>
-
-                          {expandedIndex === jobIndex && (
-                            <ul className="list-none p-0 mt-4">
-                              {job.responsibilities.map((responsibility, respIndex) => (
-                                <li key={respIndex} className="flex items-start mb-2 group">
-                                  <svg
-                                    className="w-5 h-5 text-yellow-300 mr-2 flex-shrink-0 mt-1"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                      clipRule="evenodd"
-                                    ></path>
-                                  </svg>
-                                  <div className="flex-1 flex flex-col md:flex-row md:items-center justify-between">
-                                    <p className="text-white text-lg flex-grow">{responsibility}</p>
-                                  </div>
-                                </li>
-                              ))}
-                            </ul>
-                          )}
-                        </div>
-                      ))}
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="fade-in text-center mb-16">
+                    <h2 className="text-4xl font-bold mb-4">
+                        Professional <span className="gradient-text">Experience</span>
+                    </h2>
+                    <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto"></div>
                     </div>
 
-                  </div>
+                    <div className="relative">
+                    {/* Timeline line */}
+                    <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-cyan-400 to-purple-500"></div>
+
+                    <div className="space-y-16">
+                        {portfolioData.experience.map((job, jobIndex) => (
+                        <div
+                            key={jobIndex}
+                            className={`timeline-item flex items-center ${
+                            jobIndex % 2 === 0 ? 'justify-start' : 'flex-row-reverse'
+                            }`}
+                            style={{ animationDelay: `${0.1 * jobIndex}s` }}
+                        >
+                            <div
+                            className={`w-1/2 ${
+                                jobIndex % 2 === 0 ? 'pr-8 text-right' : 'pl-8 text-left'
+                            }`}
+                            >
+                            <div className="glass-card p-6 rounded-xl group hover:shadow-xl hover:scale-[1.02] transition duration-300 ease-in-out">
+                                {/* The entire header is now a clickable element */}
+                                <div
+                                className="cursor-pointer"
+                                onClick={() => toggleResponsibilities(jobIndex)}
+                                >
+                                <h3 className="text-xl font-bold text-cyan-400 mb-2">
+                                    {job.title}
+                                </h3>
+                                <p className="text-gray-300 mb-2">{job.company}</p>
+                                <p className="text-sm text-gray-400 mb-4">{job.duration}</p>
+                                {/* You can show the short description here if you want it to be always visible */}
+                                {job.shortDescription && (
+                                    <p className="text-gray-300">{job.shortDescription}</p>
+                                )}
+                                </div>
+
+                                {/* This section with responsibilities is conditionally rendered */}
+                                {expandedIndex === jobIndex && (
+                                <ul className="list-none p-0 mt-4 text-left">
+                                    {job.responsibilities.map((responsibility, respIndex) => (
+                                    <li
+                                        key={respIndex}
+                                        className="flex items-start mb-2 group"
+                                    >
+                                        <svg
+                                        className="w-5 h-5 text-yellow-300 mr-2 flex-shrink-0 mt-1"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                        >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clipRule="evenodd"
+                                        ></path>
+                                        </svg>
+                                        <div className="flex-1 flex flex-col md:flex-row md:items-center justify-between">
+                                        <p className="text-white text-lg flex-grow">
+                                            {responsibility}
+                                        </p>
+                                        </div>
+                                    </li>
+                                    ))}
+                                </ul>
+                                )}
+                            </div>
+                            </div>
+                            <div
+                            className={`w-4 h-4 rounded-full relative z-10 ${
+                                jobIndex % 2 === 0 ? 'bg-cyan-400' : 'bg-blue-400'
+                            }`}
+                            ></div>
+                            <div className="w-1/2"></div>
+                        </div>
+                        ))}
+                    </div>
+                    </div>
+                </div>
                 </section>
 
                 
@@ -1431,9 +1447,10 @@ One of her most notable strengths is her ability to adapt to changing circumstan
                 <section
   id="contact" 
   ref={(node) => setSectionRef(node, 'contact')}
-  className={`py-16 md:py-24 text-white animated-section ${revealedSections['contact'] ? 'is-visible' : ''}`}
-  style={{ backgroundImage: 'url("./images/b5.jpg")', backgroundSize: 'cover', backgroundPosition: 'center' }}
+  className={`relative py-16 md:py-24 text-white animated-section ${revealedSections['contact'] ? 'is-visible' : ''}`}
 >
+<div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900"></div>
+                  <div class="absolute inset-0 bg-black bg-opacity-50"></div> 
                   <div className="container mx-auto px-4 pt-6 text-center max-w-3xl glassmorphism-card">
                       <SectionTitle><span className="text-yellow-300">
                         <div className="flex w-full justify-center items-end"> 
@@ -1522,6 +1539,29 @@ One of her most notable strengths is her ability to adapt to changing circumstan
             </div>
           );
         };
+
+        // Add some interactive particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'fixed w-1 h-1 bg-cyan-400 rounded-full opacity-60 pointer-events-none z-0';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.top = window.innerHeight + 'px';
+            
+            document.body.appendChild(particle);
+            
+            const animation = particle.animate([
+                { transform: 'translateY(0px)', opacity: 0.6 },
+                { transform: `translateY(-${window.innerHeight + 100}px)`, opacity: 0 }
+            ], {
+                duration: Math.random() * 3000 + 2000,
+                easing: 'linear'
+            });
+            
+            animation.onfinish = () => particle.remove();
+        }
+
+        // Create particles periodically
+        setInterval(createParticle, 300);
 
         ReactDOM.createRoot(document.getElementById('root')).render(<App />);
     </script>
