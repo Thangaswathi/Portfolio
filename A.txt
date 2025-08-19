@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thangaswathi - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .project-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .skill-progress {
+            width: 0%;
+            transition: width 2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .skill-progress.animate {
+            width: var(--progress);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background: linear-gradient(90deg, #06b6d4, #3b82f6);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .typing-cursor {
+            border-right: 3px solid #06b6d4;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { border-color: #06b6d4; }
+            51%, 100% { border-color: transparent; }
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes pulse-glow {
+            from { box-shadow: 0 0 20px rgba(6, 182, 212, 0.3); }
+            to { box-shadow: 0 0 30px rgba(6, 182, 212, 0.6); }
+        }
+        
+        .timeline-item {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.6s ease;
+        }
+        
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white overflow-x-hidden">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-2xl font-bold gradient-text">Thangaswathi</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="nav-link hover:text-cyan-400">Home</a>
+                    <a href="#about" class="nav-link hover:text-cyan-400">About</a>
+                    <a href="#experience" class="nav-link hover:text-cyan-400">Experience</a>
+                    <a href="#projects" class="nav-link hover:text-cyan-400">Projects</a>
+                    <a href="#skills" class="nav-link hover:text-cyan-400">Skills</a>
+                    <a href="#contact" class="nav-link hover:text-cyan-400">Contact</a>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-gray-900 bg-opacity-95 backdrop-blur-lg">
+            <div class="px-6 py-4 space-y-4">
+                <a href="#home" class="block hover:text-cyan-400 transition-colors">Home</a>
+                <a href="#about" class="block hover:text-cyan-400 transition-colors">About</a>
+                <a href="#experience" class="block hover:text-cyan-400 transition-colors">Experience</a>
+                <a href="#projects" class="block hover:text-cyan-400 transition-colors">Projects</a>
+                <a href="#skills" class="block hover:text-cyan-400 transition-colors">Skills</a>
+                <a href="#contact" class="block hover:text-cyan-400 transition-colors">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900"></div>
+        <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+        
+        <!-- Floating particles -->
+        <div class="absolute inset-0">
+            <div class="floating absolute top-20 left-10 w-4 h-4 bg-cyan-400 rounded-full opacity-60"></div>
+            <div class="floating absolute top-40 right-20 w-6 h-6 bg-blue-400 rounded-full opacity-40" style="animation-delay: -2s;"></div>
+            <div class="floating absolute bottom-40 left-20 w-3 h-3 bg-purple-400 rounded-full opacity-50" style="animation-delay: -4s;"></div>
+            <div class="floating absolute bottom-20 right-10 w-5 h-5 bg-pink-400 rounded-full opacity-30" style="animation-delay: -1s;"></div>
+        </div>
+        
+        <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
+            <div class="fade-in">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                    Hi, I'm <span class="gradient-text">Thangaswathi</span>
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 typing-cursor" id="typing-text">Full Stack Developer</p>
+                <p class="text-lg md:text-xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
+                    Passionate about creating innovative digital solutions and bringing ideas to life through code
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="scrollToSection('projects')" class="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 pulse-glow">
+                        View My Work
+                    </button>
+                    <button onclick="scrollToSection('contact')" class="border-2 border-cyan-400 hover:bg-cyan-400 hover:text-gray-900 px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
+                        Get In Touch
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gray-800 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="fade-in text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">About <span class="gradient-text">Me</span></h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto"></div>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="slide-in-left">
+                    <div class="relative">
+                        <div class="w-80 h-80 mx-auto bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-600 rounded-full p-1">
+                            <div class="w-full h-full bg-gray-800 rounded-full flex items-center justify-center">
+                                <div class="text-8xl">👩‍💻</div>
+                            </div>
+                        </div>
+                        <div class="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-pink-400 to-red-500 rounded-full opacity-80 floating"></div>
+                        <div class="absolute -bottom-4 -left-4 w-16 h-16 bg-gradient-to-br from-green-400 to-teal-500 rounded-full opacity-60 floating" style="animation-delay: -2s;"></div>
+                    </div>
+                </div>
+                
+                <div class="slide-in-right space-y-6">
+                    <h3 class="text-3xl font-bold text-cyan-400 mb-6">Passionate Developer & Problem Solver</h3>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        I'm a dedicated full-stack developer with a passion for creating innovative digital solutions. With expertise in modern web technologies, I love turning complex problems into elegant, user-friendly applications.
+                    </p>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        My journey in technology has been driven by curiosity and a desire to make a meaningful impact through code. I believe in writing clean, efficient code and creating experiences that users love.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-6 mt-8">
+                        <div class="glass-card p-6 rounded-xl text-center transform hover:scale-105 transition-all duration-300">
+                            <div class="text-3xl font-bold text-cyan-400 mb-2">3+</div>
+                            <div class="text-gray-300">Years Experience</div>
+                        </div>
+                        <div class="glass-card p-6 rounded-xl text-center transform hover:scale-105 transition-all duration-300">
+                            <div class="text-3xl font-bold text-cyan-400 mb-2">25+</div>
+                            <div class="text-gray-300">Projects Completed</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-4 mt-8">
+                        <span class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full text-sm font-medium">Web Development</span>
+                        <span class="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-sm font-medium">UI/UX Design</span>
+                        <span class="px-4 py-2 bg-gradient-to-r from-green-500 to-teal-500 rounded-full text-sm font-medium">Problem Solving</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-20 bg-gray-900 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="fade-in text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">My <span class="gradient-text">Journey</span></h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto"></div>
+            </div>
+            
+            <div class="relative">
+                <!-- Timeline line -->
+                <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-cyan-400 to-purple-500"></div>
+                
+                <div class="space-y-16">
+                    <!-- Experience Item 1 -->
+                    <div class="timeline-item flex items-center">
+                        <div class="w-1/2 pr-8 text-right">
+                            <div class="glass-card p-6 rounded-xl">
+                                <h3 class="text-xl font-bold text-cyan-400 mb-2">Senior Full Stack Developer</h3>
+                                <p class="text-gray-300 mb-2">Tech Solutions Inc.</p>
+                                <p class="text-sm text-gray-400 mb-4">2022 - Present</p>
+                                <p class="text-gray-300">Leading development of scalable web applications using React, Node.js, and cloud technologies.</p>
+                            </div>
+                        </div>
+                        <div class="w-4 h-4 bg-cyan-400 rounded-full relative z-10"></div>
+                        <div class="w-1/2 pl-8"></div>
+                    </div>
+                    
+                    <!-- Experience Item 2 -->
+                    <div class="timeline-item flex items-center">
+                        <div class="w-1/2 pr-8"></div>
+                        <div class="w-4 h-4 bg-blue-400 rounded-full relative z-10"></div>
+                        <div class="w-1/2 pl-8">
+                            <div class="glass-card p-6 rounded-xl">
+                                <h3 class="text-xl font-bold text-blue-400 mb-2">Full Stack Developer</h3>
+                                <p class="text-gray-300 mb-2">Digital Innovations Ltd.</p>
+                                <p class="text-sm text-gray-400 mb-4">2021 - 2022</p>
+                                <p class="text-gray-300">Developed and maintained multiple client projects using modern web technologies and best practices.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Experience Item 3 -->
+                    <div class="timeline-item flex items-center">
+                        <div class="w-1/2 pr-8 text-right">
+                            <div class="glass-card p-6 rounded-xl">
+                                <h3 class="text-xl font-bold text-purple-400 mb-2">Junior Developer</h3>
+                                <p class="text-gray-300 mb-2">StartUp Hub</p>
+                                <p class="text-sm text-gray-400 mb-4">2020 - 2021</p>
+                                <p class="text-gray-300">Started my professional journey, learning and contributing to various web development projects.</p>
+                            </div>
+                        </div>
+                        <div class="w-4 h-4 bg-purple-400 rounded-full relative z-10"></div>
+                        <div class="w-1/2 pl-8"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-gray-800 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="fade-in text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Featured <span class="gradient-text">Projects</span></h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto mb-6"></div>
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto">Here are some of my recent projects that showcase my skills and passion for development</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="project-card glass-card rounded-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="text-6xl">🚀</div>
+                        <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3 text-cyan-400">E-Commerce Platform</h3>
+                        <p class="text-gray-300 mb-4 leading-relaxed">A modern, responsive e-commerce solution with advanced features like real-time inventory, payment integration, and admin dashboard.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="px-3 py-1 bg-cyan-600 text-xs rounded-full">React</span>
+                            <span class="px-3 py-1 bg-green-600 text-xs rounded-full">Node.js</span>
+                            <span class="px-3 py-1 bg-purple-600 text-xs rounded-full">MongoDB</span>
+                            <span class="px-3 py-1 bg-orange-600 text-xs rounded-full">Stripe</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <button class="flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 py-2 rounded-lg transition-all duration-300 text-sm font-medium">
+                                Live Demo
+                            </button>
+                            <button class="flex-1 border border-cyan-400 hover:bg-cyan-400 hover:text-gray-900 py-2 rounded-lg transition-all duration-300 text-sm font-medium">
+                                View Code
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card glass-card rounded-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-green-500 via-teal-500 to-blue-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="text-6xl">📱</div>
+                        <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3 text-green-400">Task Management App</h3>
+                        <p class="text-gray-300 mb-4 leading-relaxed">A collaborative task management tool with real-time updates, team collaboration features, and intuitive drag-and-drop interface.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="px-3 py-1 bg-blue-600 text-xs rounded-full">Vue.js</span>
+                            <span class="px-3 py-1 bg-orange-600 text-xs rounded-full">Firebase</span>
+                            <span class="px-3 py-1 bg-red-600 text-xs rounded-full">Tailwind</span>
+                            <span class="px-3 py-1 bg-yellow-600 text-xs rounded-full">Socket.io</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <button class="flex-1 bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 py-2 rounded-lg transition-all duration-300 text-sm font-medium">
+                                Live Demo
+                            </button>
+                            <button class="flex-1 border border-green-400 hover:bg-green-400 hover:text-gray-900 py-2 rounded-lg transition-all duration-300 text-sm font-medium">
+                                View Code
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card glass-card rounded-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="text-6xl">🎨</div>
+                        <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3 text-pink-400">Creative Portfolio</h3>
+                        <p class="text-gray-300 mb-4 leading-relaxed">A stunning portfolio website with advanced animations, interactive elements, and optimized performance for creative professionals.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="px-3 py-1 bg-yellow-600 text-xs rounded-full">JavaScript</span>
+                            <span class="px-3 py-1 bg-pink-600 text-xs rounded-full">GSAP</span>
+                            <span class="px-3 py-1 bg-indigo-600 text-xs rounded-full">CSS3</span>
+                            <span class="px-3 py-1 bg-gray-600 text-xs rounded-full">WebGL</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <button class="flex-1 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 py-2 rounded-lg transition-all duration-300 text-sm font-medium">
+                                Live Demo
+                            </button>
+                            <button class="flex-1 border border-pink-400 hover:bg-pink-400 hover:text-gray-900 py-2 rounded-lg transition-all duration-300 text-sm font-medium">
+                                View Code
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 bg-gray-900 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="fade-in text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Skills & <span class="gradient-text">Technologies</span></h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto mb-6"></div>
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto">Technologies and tools I use to bring ideas to life</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-16">
+                <!-- Frontend Skills -->
+                <div class="slide-in-left">
+                    <h3 class="text-2xl font-bold mb-8 text-cyan-400 flex items-center">
+                        <span class="mr-3">🎨</span> Frontend Development
+                    </h3>
+                    <div class="space-y-6">
+                        <div class="skill-item">
+                            <div class="flex justify-between mb-3">
+                                <span class="font-medium">React / Next.js</span>
+                                <span class="text-cyan-400 font-bold">90%</span>
+                            </div>
+                            <div class="bg-gray-700 rounded-full h-3 overflow-hidden">
+                                <div class="skill-progress bg-gradient-to-r from-cyan-400 to-blue-500 h-full rounded-full" style="--progress: 90%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="flex justify-between mb-3">
+                                <span class="font-medium">JavaScript / TypeScript</span>
+                                <span class="text-yellow-400 font-bold">85%</span>
+                            </div>
+                            <div class="bg-gray-700 rounded-full h-3 overflow-hidden">
+                                <div class="skill-progress bg-gradient-to-r from-yellow-400 to-orange-500 h-full rounded-full" style="--progress: 85%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="flex justify-between mb-3">
+                                <span class="font-medium">CSS / Tailwind / SASS</span>
+                                <span class="text-green-400 font-bold">88%</span>
+                            </div>
+                            <div class="bg-gray-700 rounded-full h-3 overflow-hidden">
+                                <div class="skill-progress bg-gradient-to-r from-green-400 to-teal-500 h-full rounded-full" style="--progress: 88%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="flex justify-between mb-3">
+                                <span class="font-medium">Vue.js / Angular</span>
+                                <span class="text-purple-400 font-bold">75%</span>
+                            </div>
+                            <div class="bg-gray-700 rounded-full h-3 overflow-hidden">
+                                <div class="skill-progress bg-gradient-to-r from-purple-400 to-pink-500 h-full rounded-full" style="--progress: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Backend Skills -->
+                <div class="slide-in-right">
+                    <h3 class="text-2xl font-bold mb-8 text-purple-400 flex items-center">
+                        <span class="mr-3">⚙️</span> Backend Development
+                    </h3>
+                    <div class="space-y-6">
+                        <div class="skill-item">
+                            <div class="flex justify-between mb-3">
+                                <span class="font-medium">Node.js / Express</span>
+                                <span class="text-green-400 font-bold">82%</span>
+                            </div>
+                            <div class="bg-gray-700 rounded-full h-3 overflow-hidden">
+                                <div class="skill-progress bg-gradient-to-r from-green-400 to-emerald-500 h-full rounded-full" style="--progress: 82%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="flex justify-between mb-3">
+                                <span class="font-medium">Python / Django</span>
+                                <span class="text-blue-400 font-bold">78%</span>
+                            </div>
+                            <div class="bg-gray-700 rounded-full h-3 overflow-hidden">
+                                <div class="skill-progress bg-gradient-to-r from-blue-400 to-indigo-500 h-full rounded-full" style="--progress: 78%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="flex justify-between mb-3">
+                                <span class="font-medium">MongoDB / PostgreSQL</span>
+                                <span class="text-pink-400 font-bold">80%</span>
+                            </div>
+                            <div class="bg-gray-700 rounded-full h-3 overflow-hidden">
+                                <div class="skill-progress bg-gradient-to-r from-pink-400 to-red-500 h-full rounded-full" style="--progress: 80%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="flex justify-between mb-3">
+                                <span class="font-medium">AWS / Docker / DevOps</span>
+                                <span class="text-orange-400 font-bold">70%</span>
+                            </div>
+                            <div class="bg-gray-700 rounded-full h-3 overflow-hidden">
+                                <div class="skill-progress bg-gradient-to-r from-orange-400 to-red-500 h-full rounded-full" style="--progress: 70%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Additional Skills -->
+            <div class="fade-in mt-16">
+                <h3 class="text-2xl font-bold mb-8 text-center gradient-text">Additional Skills</h3>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <span class="px-6 py-3 glass-card rounded-full font-medium hover:scale-105 transition-transform">Git & GitHub</span>
+                    <span class="px-6 py-3 glass-card rounded-full font-medium hover:scale-105 transition-transform">Agile/Scrum</span>
+                    <span class="px-6 py-3 glass-card rounded-full font-medium hover:scale-105 transition-transform">UI/UX Design</span>
+                    <span class="px-6 py-3 glass-card rounded-full font-medium hover:scale-105 transition-transform">RESTful APIs</span>
+                    <span class="px-6 py-3 glass-card rounded-full font-medium hover:scale-105 transition-transform">GraphQL</span>
+                    <span class="px-6 py-3 glass-card rounded-full font-medium hover:scale-105 transition-transform">Testing</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-800 relative">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="fade-in text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Let's <span class="gradient-text">Connect</span></h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto mb-6"></div>
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto">Ready to bring your ideas to life? Let's discuss your next project!</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-16">
+                <!-- Contact Info -->
+                <div class="slide-in-left">
+                    <h3 class="text-2xl font-bold mb-8 gradient-text">Get In Touch</h3>
+                    <p class="text-gray-300 mb-8 text-lg leading-relaxed">
+                        I'm always excited to work on new projects and collaborate with amazing people. Whether you have a question, a project idea, or just want to say hello, feel free to reach out!
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-center space-x-4 p-4 glass-card rounded-xl hover:scale-105 transition-transform">
+                            <div class="w-12 h-12 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex items-center justify-center">
+                                <span class="text-xl">📧</span>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-cyan-400">Email</div>
+                                <div class="text-gray-300">thangaswathi@example.com</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4 p-4 glass-card rounded-xl hover:scale-105 transition-transform">
+                            <div class="w-12 h-12 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
+                                <span class="text-xl">💼</span>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-blue-400">LinkedIn</div>
+                                <div class="text-gray-300">linkedin.com/in/thangaswathi</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4 p-4 glass-card rounded-xl hover:scale-105 transition-transform">
+                            <div class="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center">
+                                <span class="text-xl">🐙</span>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-purple-400">GitHub</div>
+                                <div class="text-gray-300">github.com/thangaswathi</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4 p-4 glass-card rounded-xl hover:scale-105 transition-transform">
+                            <div class="w-12 h-12 bg-gradient-to-r from-green-400 to-teal-500 rounded-full flex items-center justify-center">
+                                <span class="text-xl">📱</span>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-green-400">Phone</div>
+                                <div class="text-gray-300">+1 (555) 123-4567</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Form -->
+                <div class="slide-in-right">
+                    <form class="glass-card p-8 rounded-xl space-y-6" onsubmit="handleFormSubmit(event)">
+                        <div>
+                            <label class="block text-sm font-medium mb-3 text-cyan-400">Your Name</label>
+                            <input type="text" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:border-cyan-400 focus:outline-none transition-all duration-300 focus:bg-gray-600">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-3 text-cyan-400">Email Address</label>
+                            <input type="email" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:border-cyan-400 focus:outline-none transition-all duration-300 focus:bg-gray-600">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-3 text-cyan-400">Subject</label>
+                            <input type="text" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:border-cyan-400 focus:outline-none transition-all duration-300 focus:bg-gray-600">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-3 text-cyan-400">Message</label>
+                            <textarea rows="5" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:border-cyan-400 focus:outline-none transition-all duration-300 focus:bg-gray-600 resize-none"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 pulse-glow">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-gray-900 border-t border-gray-700">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center">
+                <div class="text-2xl font-bold gradient-text mb-4">Thangaswathi</div>
+                <p class="text-gray-400 mb-6">Building the future, one line of code at a time.</p>
+                <div class="flex justify-center space-x-6 mb-8">
+                    <a href="#" class="w-12 h-12 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform">
+                        <span class="text-xl">💼</span>
+                    </a>
+                    <a href="#" class="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform">
+                        <span class="text-xl">🐙</span>
+                    </a>
+                    <a href="#" class="w-12 h-12 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform">
+                        <span class="text-xl">🐦</span>
+                    </a>
+                    <a href="#" class="w-12 h-12 bg-gradient-to-r from-pink-400 to-red-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform">
+                        <span class="text-xl">📧</span>
+                    </a>
+                </div>
+                <p class="text-gray-500">&copy; 2024 Thangaswathi. All rights reserved. Made with ❤️ and lots of ☕</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling function
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Animate skill bars
+                    if (entry.target.querySelector('.skill-progress')) {
+                        setTimeout(() => {
+                            entry.target.querySelectorAll('.skill-progress').forEach(bar => {
+                                bar.classList.add('animate');
+                            });
+                        }, 300);
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .timeline-item').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Typing animation
+        const typingElement = document.getElementById('typing-text');
+        const texts = [
+            'Full Stack Developer',
+            'UI/UX Enthusiast', 
+            'Problem Solver',
+            'Creative Thinker',
+            'Tech Innovator'
+        ];
+        let textIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function typeWriter() {
+            const currentText = texts[textIndex];
+            
+            if (isDeleting) {
+                typingElement.textContent = currentText.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingElement.textContent = currentText.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            if (!isDeleting && charIndex === currentText.length) {
+                setTimeout(() => isDeleting = true, 2000);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                textIndex = (textIndex + 1) % texts.length;
+            }
+
+            setTimeout(typeWriter, isDeleting ? 50 : 100);
+        }
+
+        // Start typing animation after page load
+        setTimeout(typeWriter, 1000);
+
+        // Navigation functionality
+        const navbar = document.getElementById('navbar');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(17, 24, 39, 0.95)';
+                navbar.style.backdropFilter = 'blur(10px)';
+            } else {
+                navbar.style.background = 'transparent';
+                navbar.style.backdropFilter = 'none';
+            }
+        });
+
+        // Mobile menu toggle
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Navigation link active state
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Navigation clicks
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                scrollToSection(targetId);
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Form submission
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            // Show success message
+            const button = event.target.querySelector('button[type="submit"]');
+            const originalText = button.textContent;
+            
+            button.textContent = 'Sending...';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.textContent = 'Message Sent! ✓';
+                button.style.background = 'linear-gradient(90deg, #10b981, #059669)';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                    button.style.background = '';
+                    event.target.reset();
+                }, 2000);
+            }, 1500);
+        }
+
+        // Add some interactive particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'fixed w-1 h-1 bg-cyan-400 rounded-full opacity-60 pointer-events-none z-0';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.top = window.innerHeight + 'px';
+            
+            document.body.appendChild(particle);
+            
+            const animation = particle.animate([
+                { transform: 'translateY(0px)', opacity: 0.6 },
+                { transform: `translateY(-${window.innerHeight + 100}px)`, opacity: 0 }
+            ], {
+                duration: Math.random() * 3000 + 2000,
+                easing: 'linear'
+            });
+            
+            animation.onfinish = () => particle.remove();
+        }
+
+        // Create particles periodically
+        setInterval(createParticle, 300);
+
+        // Smooth reveal on page load
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '1';
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96d689cc608d7f6e',t:'MTc1NDkwMjc4MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
